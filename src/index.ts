@@ -22,10 +22,23 @@ function initialize(container=document.body,
     container.appendChild(renderer.domElement);
 }
 
-
+// API Demo
 initialize(document.getElementById('visualization'), cameraSettings);
-const world = new World(datasetFromRange(10), Point);
-scene.add(...world.make());
+const scale = 20;
+const world = new World(datasetFromRange(8), Line);
+world.set('fromMap', (d: ramon.Datum): [number, number, number] => {
+    const i = Number(d.val);
+    const scale = 20;
+    return [scale*Math.floor((i%4)/2), 0, scale*Math.floor(i/4)];
+});
+world.set('toMap', (d: ramon.Datum): [number, number, number] => {
+    const i = Number(d.val);
+    const scale = 20;
+    return [scale*Math.floor((i%4)/2), scale, scale*Math.floor(i/4)];
+});
+const visObjects = world.make();
+console.info(`Rendered ${world.dataset.data.length} items as ${visObjects.length} meshes?.`);
+scene.add(...visObjects);
 scene.add(new AxisHelper(10));
 let t = 0;
 const zero = new Vector3(0, 0, 0);

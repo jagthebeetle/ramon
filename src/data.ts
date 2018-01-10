@@ -47,7 +47,7 @@ interface GroupIntermediate {
 let nextDatasetId = 0;
 export function datasetFromRange(upTo: number, fieldName='val'): ramon.Dataset {
     const data = [];
-    for (let i = 0; i < 10; ++i) {
+    for (let i = 0; i < upTo; ++i) {
         data.push({[fieldName]: i});
     }
     return {id: String(nextDatasetId++), data};

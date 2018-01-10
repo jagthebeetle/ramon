@@ -70,14 +70,14 @@
 "use strict";
 /* unused harmony export WebGLRenderTargetCube */
 /* unused harmony export WebGLRenderTarget */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return WebGLRenderer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "m", function() { return WebGLRenderer; });
 /* unused harmony export ShaderLib */
 /* unused harmony export UniformsLib */
 /* unused harmony export UniformsUtils */
 /* unused harmony export ShaderChunk */
 /* unused harmony export FogExp2 */
 /* unused harmony export Fog */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return Scene; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "j", function() { return Scene; });
 /* unused harmony export LensFlare */
 /* unused harmony export Sprite */
 /* unused harmony export LOD */
@@ -85,10 +85,10 @@
 /* unused harmony export Skeleton */
 /* unused harmony export Bone */
 /* unused harmony export Mesh */
-/* unused harmony export LineSegments */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return LineSegments; });
 /* unused harmony export LineLoop */
 /* unused harmony export Line */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return Points; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return Points; });
 /* unused harmony export Group */
 /* unused harmony export VideoTexture */
 /* unused harmony export DataTexture */
@@ -126,7 +126,7 @@
 /* unused harmony export LightShadow */
 /* unused harmony export Light */
 /* unused harmony export StereoCamera */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return PerspectiveCamera; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return PerspectiveCamera; });
 /* unused harmony export OrthographicCamera */
 /* unused harmony export CubeCamera */
 /* unused harmony export ArrayCamera */
@@ -183,7 +183,7 @@
 /* unused harmony export Line3 */
 /* unused harmony export Euler */
 /* unused harmony export Vector4 */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return Vector3; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "k", function() { return Vector3; });
 /* unused harmony export Vector2 */
 /* unused harmony export Quaternion */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return Color; });
@@ -259,7 +259,7 @@
 /* unused harmony export SpriteMaterial */
 /* unused harmony export RawShaderMaterial */
 /* unused harmony export ShaderMaterial */
-/* unused harmony export PointsMaterial */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return PointsMaterial; });
 /* unused harmony export MeshPhysicalMaterial */
 /* unused harmony export MeshStandardMaterial */
 /* unused harmony export MeshPhongMaterial */
@@ -270,7 +270,7 @@
 /* unused harmony export MeshDistanceMaterial */
 /* unused harmony export MeshBasicMaterial */
 /* unused harmony export LineDashedMaterial */
-/* unused harmony export LineBasicMaterial */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return LineBasicMaterial; });
 /* unused harmony export Material */
 /* unused harmony export Float64BufferAttribute */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return Float32BufferAttribute; });
@@ -310,7 +310,7 @@
 /* unused harmony export SmoothShading */
 /* unused harmony export NoColors */
 /* unused harmony export FaceColors */
-/* unused harmony export VertexColors */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "l", function() { return VertexColors; });
 /* unused harmony export NoBlending */
 /* unused harmony export NormalBlending */
 /* unused harmony export AdditiveBlending */
@@ -46068,31 +46068,45 @@ function randomColor() {
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__CameraSettings__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__geometries_Point__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__World__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__CameraSettings__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__geometries_Line__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__World__ = __webpack_require__(8);
 
 
 
 
 
 let scene;
-let cameraSettings = new __WEBPACK_IMPORTED_MODULE_2__CameraSettings__["a" /* default */](75);
+const cameraSettings = new __WEBPACK_IMPORTED_MODULE_2__CameraSettings__["a" /* default */](75);
 let renderer;
 function initialize(container = document.body, camera) {
-    scene = new __WEBPACK_IMPORTED_MODULE_0_three__["g" /* Scene */]();
-    renderer = new __WEBPACK_IMPORTED_MODULE_0_three__["i" /* WebGLRenderer */]();
+    scene = new __WEBPACK_IMPORTED_MODULE_0_three__["j" /* Scene */]();
+    renderer = new __WEBPACK_IMPORTED_MODULE_0_three__["m" /* WebGLRenderer */]();
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     container.appendChild(renderer.domElement);
 }
+// API Demo
 initialize(document.getElementById('visualization'), cameraSettings);
-const world = new __WEBPACK_IMPORTED_MODULE_4__World__["a" /* default */](Object(__WEBPACK_IMPORTED_MODULE_1__data__["a" /* datasetFromRange */])(10), __WEBPACK_IMPORTED_MODULE_3__geometries_Point__["a" /* default */]);
-scene.add(...world.make());
+const scale = 20;
+const world = new __WEBPACK_IMPORTED_MODULE_4__World__["a" /* default */](Object(__WEBPACK_IMPORTED_MODULE_1__data__["a" /* datasetFromRange */])(8), __WEBPACK_IMPORTED_MODULE_3__geometries_Line__["a" /* default */]);
+world.set('fromMap', (d) => {
+    const i = Number(d.val);
+    const scale = 20;
+    return [scale * Math.floor((i % 4) / 2), 0, scale * Math.floor(i / 4)];
+});
+world.set('toMap', (d) => {
+    const i = Number(d.val);
+    const scale = 20;
+    return [scale * Math.floor((i % 4) / 2), scale, scale * Math.floor(i / 4)];
+});
+const visObjects = world.make();
+console.info(`Rendered ${world.dataset.data.length} items as ${visObjects.length} meshes?.`);
+scene.add(...visObjects);
 scene.add(new __WEBPACK_IMPORTED_MODULE_0_three__["a" /* AxisHelper */](10));
 let t = 0;
-const zero = new __WEBPACK_IMPORTED_MODULE_0_three__["h" /* Vector3 */](0, 0, 0);
+const zero = new __WEBPACK_IMPORTED_MODULE_0_three__["k" /* Vector3 */](0, 0, 0);
 function render() {
     requestAnimationFrame(render);
     renderer.render(scene, cameraSettings.camera);
@@ -46110,11 +46124,67 @@ render();
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* unused harmony export group */
+/* harmony export (immutable) */ __webpack_exports__["a"] = datasetFromRange;
+/**
+ * Groups `data` by: bucketing it according to `grouping.groupFields` and then
+ * applying grouping.aggregateFn.
+ * @param data
+ * @param grouping A grouping description by which to transform data.
+ */
+function group(data, grouping) {
+    const groups = {};
+    const keyFromDatum = (d) => {
+        return JSON.stringify(grouping.groupFields.map(key => d[key]));
+    };
+    data.forEach(datum => {
+        const groupKey = keyFromDatum(datum);
+        groups[groupKey] = groups[groupKey] || [];
+        groups[groupKey].push(datum);
+    });
+    const result = [];
+    const aggregateName = `${grouping.aggregateFn.name}_${grouping.aggregateField}`;
+    /* tslint:disable:forin */
+    for (const groupKey in groups) {
+        const group = {};
+        const aggregateVal = grouping.aggregateFn(groups[groupKey], grouping.aggregateField);
+        const groupedVals = JSON.parse(groupKey);
+        grouping.groupFields.forEach((groupField, i) => {
+            group[groupField] = groupedVals[i];
+        });
+        group[aggregateName] = aggregateVal;
+        result.push(group);
+    }
+    /* tslint:enable */
+    return result;
+}
+/**
+ * Produces a dataset of integers under the optional field, up to provided
+ * limit.
+ * @param upTo Exclusive upper bound on data generated.
+ * @param fieldName Field under which each datum will be contained, defaulting
+ *                  to `val`.
+ */
+let nextDatasetId = 0;
+function datasetFromRange(upTo, fieldName = 'val') {
+    const data = [];
+    for (let i = 0; i < upTo; ++i) {
+        data.push({ [fieldName]: i });
+    }
+    return { id: String(nextDatasetId++), data };
+}
+
+
+/***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
 
 class CameraSettings {
     constructor(fieldOfView, aspectRatio = window.innerWidth / window.innerHeight, nearFrustum, farFrustum) {
-        this.camera = new __WEBPACK_IMPORTED_MODULE_0_three__["e" /* PerspectiveCamera */](fieldOfView, aspectRatio);
+        this.camera = new __WEBPACK_IMPORTED_MODULE_0_three__["g" /* PerspectiveCamera */](fieldOfView, aspectRatio);
     }
     refitWindow() {
         this.camera.aspect = window.innerWidth / window.innerHeight;
@@ -46126,8 +46196,34 @@ class CameraSettings {
 
 
 /***/ }),
-/* 4 */,
 /* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ColorfulObject__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Vector__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Visualizable__ = __webpack_require__(10);
+
+
+
+
+class Point extends __WEBPACK_IMPORTED_MODULE_3__Visualizable__["a" /* default */] {
+    constructor(positionMap = __WEBPACK_IMPORTED_MODULE_2__Vector__["a" /* randomVector */], colorMap = __WEBPACK_IMPORTED_MODULE_1__ColorfulObject__["a" /* randomColor */]) {
+        super();
+        this.positionMap = positionMap;
+        this.colorMap = colorMap;
+        this.primaMateria = __WEBPACK_IMPORTED_MODULE_0_three__["i" /* PointsMaterial */].bind(null, { vertexColors: __WEBPACK_IMPORTED_MODULE_0_three__["l" /* VertexColors */] });
+        this.morphe = __WEBPACK_IMPORTED_MODULE_0_three__["h" /* Points */];
+        this.pointMaps = [this.positionMap];
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Point;
+
+
+
+/***/ }),
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46138,7 +46234,7 @@ class CameraSettings {
 
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -46151,10 +46247,14 @@ function randomVector(datum) {
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__geometries_Point__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__geometries_Line__ = __webpack_require__(9);
+
+
 class World {
     constructor(dataset, ctor) {
         this.dataset = dataset;
@@ -46165,71 +46265,32 @@ class World {
         this.maps[key] = fn;
     }
     make() {
-        return this.dataset.data.map(datum => {
-            const object = new this.ctor();
-            for (let key in this.maps) {
-                object[key] = this.maps[key];
-            }
-            return object.realize(datum);
-        });
+        // Odd indirection required to trick TS into comparing these two.
+        switch (this.ctor.prototype.constructor) {
+            case __WEBPACK_IMPORTED_MODULE_0__geometries_Point__["a" /* default */]:
+            case __WEBPACK_IMPORTED_MODULE_1__geometries_Line__["a" /* default */]:
+                const visObject = new this.ctor();
+                this.setMaps(visObject);
+                return [visObject.realize(this.dataset.data)];
+            default:
+                return this.dataset.data.map(datum => {
+                    const visObject = new this.ctor();
+                    this.setMaps(visObject);
+                    return visObject.realize(datum);
+                });
+        }
+    }
+    setMaps(visObject) {
+        /* tslint:disable:forin */
+        for (const key in this.maps) {
+            visObject[key] = this.maps[key];
+        }
+        /* tslint:enable */
+        console.info(visObject);
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = World;
 
-
-
-/***/ }),
-/* 8 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* unused harmony export group */
-/* harmony export (immutable) */ __webpack_exports__["a"] = datasetFromRange;
-/**
- * Groups `data` by: bucketing it according to `grouping.groupFields` and then
- * applying grouping.aggregateFn.
- * @param data
- * @param grouping A grouping description by which to transform data.
- */
-function group(data, grouping) {
-    const groups = {};
-    const keyFromDatum = function (d) {
-        return JSON.stringify(grouping.groupFields.map(key => d[key]));
-    };
-    data.forEach(datum => {
-        const groupKey = keyFromDatum(datum);
-        groups[groupKey] = groups[groupKey] || [];
-        groups[groupKey].push(datum);
-    });
-    const result = [];
-    const aggregateName = `${grouping.aggregateFn.name}_${grouping.aggregateField}`;
-    for (let groupKey in groups) {
-        const group = {};
-        const aggregateVal = grouping.aggregateFn(groups[groupKey], grouping.aggregateField);
-        const groupedVals = JSON.parse(groupKey);
-        grouping.groupFields.forEach((groupField, i) => {
-            group[groupField] = groupedVals[i];
-        });
-        group[aggregateName] = aggregateVal;
-        result.push(group);
-    }
-    return result;
-}
-/**
- * Produces a dataset of integers under the optional field, up to provided
- * limit.
- * @param upTo Exclusive upper bound on data generated.
- * @param fieldName Field under which each datum will be contained, defaulting
- *                  to `val`.
- */
-let _next_dataset_id = 0;
-function datasetFromRange(upTo, fieldName = 'val') {
-    const data = [];
-    for (let i = 0; i < 10; ++i) {
-        data.push({ [fieldName]: i });
-    }
-    return { id: String(_next_dataset_id++), data };
-}
 
 
 /***/ }),
@@ -46238,23 +46299,76 @@ function datasetFromRange(upTo, fieldName = 'val') {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ColorfulObject__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Vector__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ColorfulObject__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Vector__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Visualizable__ = __webpack_require__(10);
 
 
 
-class Point {
-    constructor(positionMap = __WEBPACK_IMPORTED_MODULE_2__Vector__["a" /* randomVector */], colorMap = __WEBPACK_IMPORTED_MODULE_1__ColorfulObject__["a" /* randomColor */]) {
-        this.positionMap = positionMap;
+
+class Line extends __WEBPACK_IMPORTED_MODULE_3__Visualizable__["a" /* default */] {
+    constructor(colorMap = __WEBPACK_IMPORTED_MODULE_1__ColorfulObject__["a" /* randomColor */], fromMap = __WEBPACK_IMPORTED_MODULE_2__Vector__["a" /* randomVector */], toMap = __WEBPACK_IMPORTED_MODULE_2__Vector__["a" /* randomVector */]) {
+        super();
         this.colorMap = colorMap;
+        this.fromMap = fromMap;
+        this.toMap = toMap;
+        this.primaMateria = __WEBPACK_IMPORTED_MODULE_0_three__["e" /* LineBasicMaterial */].bind(null, { vertexColors: __WEBPACK_IMPORTED_MODULE_0_three__["l" /* VertexColors */], linewidth: 2 });
+        this.morphe = __WEBPACK_IMPORTED_MODULE_0_three__["f" /* LineSegments */];
     }
-    realize(datum) {
-        this.geometry = new __WEBPACK_IMPORTED_MODULE_0_three__["b" /* BufferGeometry */]();
-        this.geometry.addAttribute('position', new __WEBPACK_IMPORTED_MODULE_0_three__["d" /* Float32BufferAttribute */](this.positionMap(datum), 3));
-        return new __WEBPACK_IMPORTED_MODULE_0_three__["f" /* Points */](this.geometry);
+    get pointMaps() {
+        return [this.fromMap, this.toMap];
     }
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = Point;
+/* harmony export (immutable) */ __webpack_exports__["a"] = Line;
+
+
+
+/***/ }),
+/* 10 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
+
+class Visualizable {
+    constructor() {
+        this.geometry = new __WEBPACK_IMPORTED_MODULE_0_three__["b" /* BufferGeometry */]();
+    }
+    getGeometryBuffers(data, colorMap, ...positionMaps) {
+        const pointsPerObject = positionMaps.length;
+        const componentsPerObject = pointsPerObject * 3;
+        const bufferLength = componentsPerObject * data.length;
+        const positionBuffer = new Float32Array(bufferLength);
+        const colorBuffer = new Float32Array(bufferLength);
+        const colorCalculator = new __WEBPACK_IMPORTED_MODULE_0_three__["c" /* Color */]();
+        data.forEach((datum, i) => {
+            positionMaps.forEach((map, j) => {
+                positionBuffer.set(map(datum), componentsPerObject * i + j * 3);
+            });
+            const requestedColor = colorMap(datum);
+            const color = (typeof requestedColor === 'string') ?
+                colorCalculator.set(requestedColor)
+                : requestedColor;
+            const rgb = color.toArray();
+            for (let p = 0; p < pointsPerObject; ++p) {
+                colorBuffer.set(rgb, componentsPerObject * i + 3 * p);
+            }
+        });
+        return [colorBuffer, positionBuffer];
+    }
+    realize(data) {
+        if (!Array.isArray(data)) {
+            data = [data];
+        }
+        this.material = new this.primaMateria();
+        const [colorBuffer, positionBuffer] = this.getGeometryBuffers(data, this.colorMap, ...this.pointMaps);
+        this.geometry.addAttribute('position', new __WEBPACK_IMPORTED_MODULE_0_three__["d" /* Float32BufferAttribute */](positionBuffer, 3));
+        this.geometry.addAttribute('color', new __WEBPACK_IMPORTED_MODULE_0_three__["d" /* Float32BufferAttribute */](colorBuffer, 3));
+        this.eidos = new this.morphe(this.geometry, this.material);
+        return this.eidos;
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Visualizable;
 
 
 

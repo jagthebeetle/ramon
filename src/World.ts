@@ -1,20 +1,37 @@
+import Point from './geometries/Point';
+import Line from './geometries/Line';
+
 export default class World<T extends ramon.Visualizable> {
     maps: {[key: string]: ramon.VisMap} = {};
     constructor(public dataset: ramon.Dataset, private ctor: new() => T) {}
 
-    set<K extends keyof T>(key: K, fn: ramon.VisMap) {
+    set<K extends keyof T>(key: K, fn: T[K]) {
         this.maps[key] = fn;
     }
 
-    make<K extends keyof T>(): THREE.Object3D[] {
-        return this.dataset.data.map(datum => {
-            const object = new this.ctor();
-            /* tslint:disable:forin */
-            for (const key in this.maps) {
-                object[(key as K)] = this.maps[key];
-            }
-            /* tslint:enable */
-            return object.realize(datum);
-        });
+    make(): THREE.Object3D[] {
+        // Odd indirection required to trick TS into comparing these two.
+        switch (this.ctor.prototype.constructor) {
+            case Point:
+            case Line:
+                const visObject = new this.ctor();
+                this.setMaps(visObject);
+                return [visObject.realize(this.dataset.data)];
+            default:
+                return this.dataset.data.map(datum => {
+                    const visObject = new this.ctor();
+                    this.setMaps(visObject);
+                    return visObject.realize(datum);
+                });
+        }
+    }
+
+    setMaps<K extends keyof T>(visObject: T) {
+        /* tslint:disable:forin */
+        for (const key in this.maps) {
+            visObject[(key as K)] = this.maps[key];
+        }
+        /* tslint:enable */
+        console.info(visObject);
     }
 }

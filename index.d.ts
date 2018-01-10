@@ -27,7 +27,10 @@ export interface Grouping {
 
 // Visualization Types
 export interface Visualizable {
-    realize(datum: ramon.Datum): THREE.Object3D;
+    realize(datum: ramon.Datum | ramon.Datum[]): THREE.Object3D;
+    geometry: THREE.BufferGeometry;
+    material: THREE.Material;
+    eidos: THREE.Object3D;
 }
 
 export abstract class ColorfulObject {

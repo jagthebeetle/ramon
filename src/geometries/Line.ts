@@ -1,30 +1,26 @@
 import {
     BufferGeometry,
+    Color,
     Float32BufferAttribute,
-    Line as LineMesh,
-    LineBasicMaterial
+    LineSegments,
+    LineBasicMaterial,
+    VertexColors
 } from 'three';
 import {randomColor} from './ColorfulObject';
 import {randomVector} from './Vector';
+import Visualizable from './Visualizable';
 
-export default class Line implements ramon.Visualizable, ramon.ColorfulObject {
-    material: THREE.LineBasicMaterial;
-    geometry: THREE.BufferGeometry;
-    line: THREE.Line;
+export default class Line extends Visualizable<LineBasicMaterial, LineSegments>
+                          implements ramon.ColorfulObject {
     constructor(public colorMap: ramon.ColorMap=randomColor,
                 public fromMap: ramon.PointMap=randomVector,
-                public toMap: ramon.PointMap=randomVector) {}
+                public toMap: ramon.PointMap=randomVector) {
+        super();
+        this.primaMateria = LineBasicMaterial.bind(null, {vertexColors: VertexColors, linewidth: 2});
+        this.morphe = LineSegments;
+    }
 
-    realize(datum: ramon.Datum) {
-        this.material = new LineBasicMaterial({color: this.colorMap(datum)});
-        this.geometry = new BufferGeometry();
-        const positions = [];
-        positions.push(...this.fromMap(datum));
-        positions.push(...this.toMap(datum));
-        this.geometry.addAttribute(
-            'position',
-            new Float32BufferAttribute(positions, 3));
-        this.line = new LineMesh(this.geometry, this.material);
-        return this.line;
+    get pointMaps() {
+        return [this.fromMap, this.toMap];
     }
 }

@@ -1,21 +1,21 @@
 import {
     BufferGeometry,
     Float32BufferAttribute,
-    Points
+    Points,
+    PointsMaterial,
+    VertexColors
 } from 'three';
 import {randomColor} from './ColorfulObject';
 import {randomVector} from './Vector';
+import Visualizable from './Visualizable';
 
-export default class Point implements ramon.Visualizable, ramon.Vector, ramon.ColorfulObject {
-    geometry: THREE.BufferGeometry;
+export default class Point extends Visualizable<PointsMaterial, Points>
+                           implements ramon.Vector, ramon.ColorfulObject {
     constructor(public positionMap: ramon.PointMap=randomVector,
-                public colorMap: ramon.ColorMap=randomColor) {}
-
-    realize(datum: ramon.Datum) {
-        this.geometry = new BufferGeometry();
-        this.geometry.addAttribute(
-            'position',
-            new Float32BufferAttribute(this.positionMap(datum), 3));
-        return new Points(this.geometry);
+                public colorMap: ramon.ColorMap=randomColor) {
+        super();
+        this.primaMateria = PointsMaterial.bind(null, {vertexColors: VertexColors});
+        this.morphe = Points;
+        this.pointMaps = [this.positionMap];
     }
 } 
