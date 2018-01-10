@@ -5,8 +5,8 @@
  * @param grouping A grouping description by which to transform data.
  */
 export function group(data: ramon.Datum[], grouping: ramon.Grouping) {
-    const groups: _GroupIntermediate = {};
-    const keyFromDatum = function(d: ramon.Datum) {
+    const groups: GroupIntermediate = {};
+    const keyFromDatum = (d: ramon.Datum) => {
         return JSON.stringify(grouping.groupFields.map(key => d[key]));
     };
     data.forEach(datum => {
@@ -17,7 +17,8 @@ export function group(data: ramon.Datum[], grouping: ramon.Grouping) {
 
     const result: ramon.Datum[] = [];
     const aggregateName = `${grouping.aggregateFn.name}_${grouping.aggregateField}`;
-    for (let groupKey in groups) {
+    /* tslint:disable:forin */
+    for (const groupKey in groups) {
         const group: ramon.Datum = {};
         const aggregateVal = grouping.aggregateFn(groups[groupKey],
                                                   grouping.aggregateField);
@@ -28,10 +29,11 @@ export function group(data: ramon.Datum[], grouping: ramon.Grouping) {
         group[aggregateName] = aggregateVal;
         result.push(group);
     }
+    /* tslint:enable */
     return result;
 }
 
-interface _GroupIntermediate {
+interface GroupIntermediate {
     [domain: string]: ramon.Datum[];
 }
 
@@ -42,11 +44,11 @@ interface _GroupIntermediate {
  * @param fieldName Field under which each datum will be contained, defaulting
  *                  to `val`.
  */
-let _next_dataset_id = 0;
+let nextDatasetId = 0;
 export function datasetFromRange(upTo: number, fieldName='val'): ramon.Dataset {
     const data = [];
     for (let i = 0; i < 10; ++i) {
         data.push({[fieldName]: i});
     }
-    return {id: String(_next_dataset_id++), data};
+    return {id: String(nextDatasetId++), data};
 }

@@ -10,7 +10,7 @@ import Point from './geometries/Point';
 import World from './World';
 
 let scene: THREE.Scene;
-let cameraSettings: CameraSettings = new CameraSettings(75);
+const cameraSettings: CameraSettings = new CameraSettings(75);
 let renderer: THREE.WebGLRenderer;
 
 function initialize(container=document.body,

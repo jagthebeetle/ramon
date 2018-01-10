@@ -9,9 +9,11 @@ export default class World<T extends ramon.Visualizable> {
     make<K extends keyof T>(): THREE.Object3D[] {
         return this.dataset.data.map(datum => {
             const object = new this.ctor();
-            for (let key in this.maps) {
-                object[(key as K)] = this.maps[key]
+            /* tslint:disable:forin */
+            for (const key in this.maps) {
+                object[(key as K)] = this.maps[key];
             }
+            /* tslint:enable */
             return object.realize(datum);
         });
     }
