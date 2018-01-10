@@ -1,0 +1,14 @@
+body {
+    margin: 0;
+}
+
+#controls {
+    position: fixed;
+    top: 0;
+    right: 0;
+    color: #fff;
+}
+
+h4 {
+    margin: 0;
+}

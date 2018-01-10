@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -68,36 +68,16 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(1);
-
-let scene;
-let camera;
-let renderer;
-function initialize(container = document.body, fov = 75, aspectRatio = window.innerWidth / window.innerHeight) {
-    scene = new __WEBPACK_IMPORTED_MODULE_0_three__["b" /* Scene */]();
-    camera = new __WEBPACK_IMPORTED_MODULE_0_three__["a" /* PerspectiveCamera */](fov, aspectRatio);
-    renderer = new __WEBPACK_IMPORTED_MODULE_0_three__["c" /* WebGLRenderer */]();
-    container.appendChild(renderer.domElement);
-}
-initialize(document.getElementById('visualization'));
-
-
-/***/ }),
-/* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* unused harmony export WebGLRenderTargetCube */
 /* unused harmony export WebGLRenderTarget */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return WebGLRenderer; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "i", function() { return WebGLRenderer; });
 /* unused harmony export ShaderLib */
 /* unused harmony export UniformsLib */
 /* unused harmony export UniformsUtils */
 /* unused harmony export ShaderChunk */
 /* unused harmony export FogExp2 */
 /* unused harmony export Fog */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return Scene; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return Scene; });
 /* unused harmony export LensFlare */
 /* unused harmony export Sprite */
 /* unused harmony export LOD */
@@ -108,7 +88,7 @@ initialize(document.getElementById('visualization'));
 /* unused harmony export LineSegments */
 /* unused harmony export LineLoop */
 /* unused harmony export Line */
-/* unused harmony export Points */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return Points; });
 /* unused harmony export Group */
 /* unused harmony export VideoTexture */
 /* unused harmony export DataTexture */
@@ -146,7 +126,7 @@ initialize(document.getElementById('visualization'));
 /* unused harmony export LightShadow */
 /* unused harmony export Light */
 /* unused harmony export StereoCamera */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PerspectiveCamera; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return PerspectiveCamera; });
 /* unused harmony export OrthographicCamera */
 /* unused harmony export CubeCamera */
 /* unused harmony export ArrayCamera */
@@ -171,7 +151,7 @@ initialize(document.getElementById('visualization'));
 /* unused harmony export AnimationClip */
 /* unused harmony export Uniform */
 /* unused harmony export InstancedBufferGeometry */
-/* unused harmony export BufferGeometry */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return BufferGeometry; });
 /* unused harmony export Geometry */
 /* unused harmony export InterleavedBufferAttribute */
 /* unused harmony export InstancedInterleavedBuffer */
@@ -203,10 +183,10 @@ initialize(document.getElementById('visualization'));
 /* unused harmony export Line3 */
 /* unused harmony export Euler */
 /* unused harmony export Vector4 */
-/* unused harmony export Vector3 */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "h", function() { return Vector3; });
 /* unused harmony export Vector2 */
 /* unused harmony export Quaternion */
-/* unused harmony export Color */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return Color; });
 /* unused harmony export ImmediateRenderObject */
 /* unused harmony export VertexNormalsHelper */
 /* unused harmony export SpotLightHelper */
@@ -293,7 +273,7 @@ initialize(document.getElementById('visualization'));
 /* unused harmony export LineBasicMaterial */
 /* unused harmony export Material */
 /* unused harmony export Float64BufferAttribute */
-/* unused harmony export Float32BufferAttribute */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return Float32BufferAttribute; });
 /* unused harmony export Uint32BufferAttribute */
 /* unused harmony export Int32BufferAttribute */
 /* unused harmony export Uint16BufferAttribute */
@@ -463,7 +443,7 @@ initialize(document.getElementById('visualization'));
 /* unused harmony export ClosedSplineCurve3 */
 /* unused harmony export SplineCurve3 */
 /* unused harmony export Spline */
-/* unused harmony export AxisHelper */
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AxisHelper; });
 /* unused harmony export BoundingBoxHelper */
 /* unused harmony export EdgesHelper */
 /* unused harmony export WireframeHelper */
@@ -46061,6 +46041,220 @@ function CanvasRenderer() {
 
 }
 
+
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = randInt;
+/* harmony export (immutable) */ __webpack_exports__["b"] = randomColor;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
+
+function randInt(a, b) {
+    return a + Math.floor(Math.random() * (b - a));
+}
+function randomColor() {
+    return new __WEBPACK_IMPORTED_MODULE_0_three__["c" /* Color */](randInt(0x000000, 0x1000000));
+}
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__CameraSettings__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__geometries_Point__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__World__ = __webpack_require__(7);
+
+
+
+
+
+let scene;
+let cameraSettings = new __WEBPACK_IMPORTED_MODULE_2__CameraSettings__["a" /* default */](75);
+let renderer;
+function initialize(container = document.body, camera) {
+    scene = new __WEBPACK_IMPORTED_MODULE_0_three__["g" /* Scene */]();
+    renderer = new __WEBPACK_IMPORTED_MODULE_0_three__["i" /* WebGLRenderer */]();
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    container.appendChild(renderer.domElement);
+}
+initialize(document.getElementById('visualization'), cameraSettings);
+const world = new __WEBPACK_IMPORTED_MODULE_4__World__["a" /* default */](Object(__WEBPACK_IMPORTED_MODULE_1__data__["a" /* datasetFromRange */])(10), __WEBPACK_IMPORTED_MODULE_3__geometries_Point__["a" /* default */]);
+scene.add(...world.make());
+scene.add(new __WEBPACK_IMPORTED_MODULE_0_three__["a" /* AxisHelper */](10));
+let t = 0;
+const zero = new __WEBPACK_IMPORTED_MODULE_0_three__["h" /* Vector3 */](0, 0, 0);
+function render() {
+    requestAnimationFrame(render);
+    renderer.render(scene, cameraSettings.camera);
+    cameraSettings.camera.position.x = 70 * Math.cos(t);
+    cameraSettings.camera.position.y = 30;
+    cameraSettings.camera.position.z = 70 * Math.sin(t);
+    cameraSettings.camera.lookAt(zero);
+    t += Math.PI / 100;
+}
+render();
+
+
+/***/ }),
+/* 3 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
+
+class CameraSettings {
+    constructor(fieldOfView, aspectRatio = window.innerWidth / window.innerHeight, nearFrustum, farFrustum) {
+        this.camera = new __WEBPACK_IMPORTED_MODULE_0_three__["e" /* PerspectiveCamera */](fieldOfView, aspectRatio);
+    }
+    refitWindow() {
+        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.updateProjectionMatrix();
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = CameraSettings;
+
+
+
+/***/ }),
+/* 4 */,
+/* 5 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__(1);
+/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__util__["b"]; });
+
+
+
+
+/***/ }),
+/* 6 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (immutable) */ __webpack_exports__["a"] = randomVector;
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__(1);
+
+function randomVector(datum) {
+    return [Object(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* randInt */])(-50, 50), Object(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* randInt */])(-50, 50), Object(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* randInt */])(-50, 50)];
+}
+
+
+/***/ }),
+/* 7 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+class World {
+    constructor(dataset, ctor) {
+        this.dataset = dataset;
+        this.ctor = ctor;
+        this.maps = {};
+    }
+    set(key, fn) {
+        this.maps[key] = fn;
+    }
+    make() {
+        return this.dataset.data.map(datum => {
+            const object = new this.ctor();
+            for (let key in this.maps) {
+                object[key] = this.maps[key];
+            }
+            return object.realize(datum);
+        });
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = World;
+
+
+
+/***/ }),
+/* 8 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* unused harmony export group */
+/* harmony export (immutable) */ __webpack_exports__["a"] = datasetFromRange;
+/**
+ * Groups `data` by: bucketing it according to `grouping.groupFields` and then
+ * applying grouping.aggregateFn.
+ * @param data
+ * @param grouping A grouping description by which to transform data.
+ */
+function group(data, grouping) {
+    const groups = {};
+    const keyFromDatum = function (d) {
+        return JSON.stringify(grouping.groupFields.map(key => d[key]));
+    };
+    data.forEach(datum => {
+        const groupKey = keyFromDatum(datum);
+        groups[groupKey] = groups[groupKey] || [];
+        groups[groupKey].push(datum);
+    });
+    const result = [];
+    const aggregateName = `${grouping.aggregateFn.name}_${grouping.aggregateField}`;
+    for (let groupKey in groups) {
+        const group = {};
+        const aggregateVal = grouping.aggregateFn(groups[groupKey], grouping.aggregateField);
+        const groupedVals = JSON.parse(groupKey);
+        grouping.groupFields.forEach((groupField, i) => {
+            group[groupField] = groupedVals[i];
+        });
+        group[aggregateName] = aggregateVal;
+        result.push(group);
+    }
+    return result;
+}
+/**
+ * Produces a dataset of integers under the optional field, up to provided
+ * limit.
+ * @param upTo Exclusive upper bound on data generated.
+ * @param fieldName Field under which each datum will be contained, defaulting
+ *                  to `val`.
+ */
+let _next_dataset_id = 0;
+function datasetFromRange(upTo, fieldName = 'val') {
+    const data = [];
+    for (let i = 0; i < 10; ++i) {
+        data.push({ [fieldName]: i });
+    }
+    return { id: String(_next_dataset_id++), data };
+}
+
+
+/***/ }),
+/* 9 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ColorfulObject__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Vector__ = __webpack_require__(6);
+
+
+
+class Point {
+    constructor(positionMap = __WEBPACK_IMPORTED_MODULE_2__Vector__["a" /* randomVector */], colorMap = __WEBPACK_IMPORTED_MODULE_1__ColorfulObject__["a" /* randomColor */]) {
+        this.positionMap = positionMap;
+        this.colorMap = colorMap;
+    }
+    realize(datum) {
+        this.geometry = new __WEBPACK_IMPORTED_MODULE_0_three__["b" /* BufferGeometry */]();
+        this.geometry.addAttribute('position', new __WEBPACK_IMPORTED_MODULE_0_three__["d" /* Float32BufferAttribute */](this.positionMap(datum), 3));
+        return new __WEBPACK_IMPORTED_MODULE_0_three__["f" /* Points */](this.geometry);
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Point;
 
 
 

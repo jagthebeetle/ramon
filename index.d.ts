@@ -24,3 +24,25 @@ export interface Grouping {
     aggregateField: string;
     aggregateFn: AggregateFunction;
 }
+
+// Visualization Types
+export interface Visualizable {
+    realize(datum: ramon.Datum): THREE.Object3D;
+}
+
+export abstract class ColorfulObject {
+    colorMap: ColorMap;
+}
+export abstract class Vector {
+    positionMap: PointMap;
+}
+
+export interface ColorMap {
+    (datum: ramon.Datum): string | THREE.Color;
+}
+
+export interface PointMap {
+    (datum: ramon.Datum): [number, number, number];
+}
+
+type VisMap = ColorMap | PointMap;

@@ -34,3 +34,19 @@ export function group(data: ramon.Datum[], grouping: ramon.Grouping) {
 interface _GroupIntermediate {
     [domain: string]: ramon.Datum[];
 }
+
+/**
+ * Produces a dataset of integers under the optional field, up to provided
+ * limit.
+ * @param upTo Exclusive upper bound on data generated.
+ * @param fieldName Field under which each datum will be contained, defaulting
+ *                  to `val`.
+ */
+let _next_dataset_id = 0;
+export function datasetFromRange(upTo: number, fieldName='val'): ramon.Dataset {
+    const data = [];
+    for (let i = 0; i < 10; ++i) {
+        data.push({[fieldName]: i});
+    }
+    return {id: String(_next_dataset_id++), data};
+}
