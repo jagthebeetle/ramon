@@ -8,9 +8,9 @@ import {
 } from 'three';
 import {randomColor} from './ColorfulObject';
 import {randomVector} from './Vector';
-import Visualizable from './Visualizable';
+import Hylomorphism from './Hylomorphism';
 
-export default class Line extends Visualizable<LineBasicMaterial, LineSegments>
+export default class Line extends Hylomorphism<LineBasicMaterial, LineSegments>
                           implements ramon.ColorfulObject {
     constructor(public colorMap: ramon.ColorMap=randomColor,
                 public fromMap: ramon.PointMap=randomVector,

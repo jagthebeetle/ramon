@@ -16,3 +16,9 @@
 I mean 3D in the sense of Euclidean space. 3D objects themselves have their own additional dimensions (color, width, size, etc.). Moreover, for the purposes of visualization, it may not even be important that they are in 3D as opposed to 2D. Indeed, it is only via *trompe-l'oeil* that computers seem to show us 3D.
 
 On the other hand, it would be odd to talk of visualizations in 4 spatial dimensions, since we'd only see (approximately) 3d slices of these at a time.
+
+### Visualization is a hylomorphism
+In the category sense, of course. An *anamorphism* (generation of WebGL attribute buffers from a single dataset) followed by a *catamorphism* (generation of an `Object3D` from the attribute buffers). The only reason to reason about visualization in this way is for the philosophical pun that follows:
+
+### Objects in 3D space are hylomorphisms
+In the Aristotelian sense, of course. They are composed of a `geometry` and `material` in three.js, and of a form (μορφή) and matter (ὕλη) in Aristotle's *Physics*.
