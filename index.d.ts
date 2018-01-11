@@ -15,14 +15,14 @@ export class Dataset {
     data: ramon.Datum[];
 }
 
-export interface AggregateFunction {
-    (data: ramon.Datum[], aggregateField: string): ramon.PrimitiveDatum;
+export interface AggregateFunction<D extends ramon.Datum> {
+    (data: D[], aggregateField: keyof D): ramon.PrimitiveDatum;
 }
 
-export interface Grouping {
-    groupFields: string[];
-    aggregateField: string;
-    aggregateFn: AggregateFunction;
+export interface Grouping<D extends ramon.Datum> {
+    groupFields: (keyof D)[];
+    aggregateField: keyof D;
+    aggregateFn: AggregateFunction<D>;
 }
 
 // Visualization Types
