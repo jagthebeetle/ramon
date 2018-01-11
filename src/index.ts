@@ -24,20 +24,19 @@ function initialize(container=document.body,
 
 // API Demo
 initialize(document.getElementById('visualization'), cameraSettings);
-const scale = 20;
-const world = new World(datasetFromRange(8), Line);
-world.set('fromMap', (d: ramon.Datum): [number, number, number] => {
+const SCALE = 20;
+const POINTS = 60;
+const world = new World(datasetFromRange(POINTS), Point);
+world.set('positionMap', (d: ramon.Datum): [number, number, number] => {
     const i = Number(d.val);
-    const scale = 20;
-    return [scale*Math.floor((i%4)/2), 0, scale*Math.floor(i/4)];
+    return [SCALE*Math.cos(2*Math.PI*i/10),
+            SCALE*Math.sin(2*Math.PI*i/10), i];
 });
-world.set('toMap', (d: ramon.Datum): [number, number, number] => {
+world.set('colorMap', (d: ramon.Datum) => {
     const i = Number(d.val);
-    const scale = 20;
-    return [scale*Math.floor((i%4)/2), scale, scale*Math.floor(i/4)];
+    return `hsl(${360*i/POINTS}, 100%, 50%)`;
 });
 const visObjects = world.make();
-console.info(`Rendered ${world.dataset.data.length} items as ${visObjects.length} meshes?.`);
 scene.add(...visObjects);
 scene.add(new AxisHelper(10));
 let t = 0;
