@@ -5,7 +5,7 @@ import {
     Material
 } from 'three';
 
-export default abstract class Visualizable<M extends THREE.Material,
+export default abstract class Hylomorphism<M extends THREE.Material,
                                            O extends THREE.Object3D>
                               implements ramon.Visualizable {
     geometry = new BufferGeometry();
