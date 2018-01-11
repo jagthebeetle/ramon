@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --config webpack.prod.js",
     "start": "webpack --watch --config webpack.prod.js",
-    "test": "mocha -r ts-node/register src/test/*.ts"
+    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha -r ts-node/register src/test/**/*.ts"
   },
   "repository": {
     "type": "git",
