@@ -1,3 +1,5 @@
+import CameraSettings from "./src/CameraSettings";
+
 // Type definitions for [~THE LIBRARY NAME~] [~OPTIONAL VERSION NUMBER~]
 // Project: [~THE PROJECT NAME~]
 // Definitions by: [~YOUR NAME~] <[~A URL FOR YOU~]>
@@ -52,5 +54,7 @@ export type VisMap = ColorMap | PointMap;
 
 // Rendering Classes
 export class RenderLoop {
-    troll: string;
+    renderFn: FrameRequestCallback;
+    new(cameraSettings: CameraSettings,
+        renderFn: FrameRequestCallback): RenderLoop;
 }

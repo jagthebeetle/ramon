@@ -2,10 +2,10 @@
   "name": "ramon",
   "version": "1.0.0",
   "description": "Expressive visualization",
-  "main": "index.js",
+  "main": "dist/ramon.js",
   "scripts": {
     "build": "webpack --config webpack.prod.js",
-    "start": "webpack --watch --config webpack.prod.js",
+    "start": "webpack --watch --config demo/webpack.demo.js",
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha -r ts-node/register src/test/**/*.ts"
   },
   "repository": {

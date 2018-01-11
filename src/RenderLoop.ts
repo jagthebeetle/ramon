@@ -1,8 +1,8 @@
 import CameraSettings from './CameraSettings';
 
 export default class RenderLoop {
-    private loop_: (time: number) => void;
-    renderFn: (time: number) => void;
+    private loop_: FrameRequestCallback;
+    renderFn: FrameRequestCallback;
     constructor(cameraSettings: CameraSettings,
                 renderFn: FrameRequestCallback) {
         this.renderFn = cameraSettings.controls ?

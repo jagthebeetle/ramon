@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-    entry: './src/index.ts',
+    entry: './demo/index.ts',
     module: {
         rules: [
         {
@@ -15,9 +15,7 @@ module.exports = {
         extensions: [ '.tsx', '.ts', '.js' ]
     },
     output: {
-        filename: 'ramon.js',
-        libraryTarget: 'umd',
-        library: 'ramon',
+        filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist')
     }
 };
