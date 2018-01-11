@@ -48,4 +48,9 @@ export interface PointMap {
     (datum: ramon.Datum): [number, number, number];
 }
 
-type VisMap = ColorMap | PointMap;
+export type VisMap = ColorMap | PointMap;
+
+// Rendering Classes
+export class RenderLoop {
+    troll: string;
+}

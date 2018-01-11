@@ -7,14 +7,14 @@ import { datasetFromRange } from './data';
 import CameraSettings from './CameraSettings';
 import Line from './geometries/Line';
 import Point from './geometries/Point';
+import RenderLoop from './RenderLoop';
 import World from './World';
 
 let scene: THREE.Scene;
 const cameraSettings: CameraSettings = new CameraSettings(75);
 let renderer: THREE.WebGLRenderer;
 
-function initialize(container=document.body,
-                    camera: CameraSettings) {
+function initialize(container=document.body) {
     scene = new Scene();
     renderer = new WebGLRenderer();
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -23,7 +23,7 @@ function initialize(container=document.body,
 }
 
 // API Demo
-initialize(document.getElementById('visualization'), cameraSettings);
+initialize(document.getElementById('visualization'));
 const SCALE = 20;
 const POINTS = 60;
 const world = new World(datasetFromRange(POINTS), Point);
@@ -39,16 +39,13 @@ world.set('colorMap', (d: ramon.Datum) => {
 const visObjects = world.make();
 scene.add(...visObjects);
 scene.add(new AxisHelper(10));
-let t = 0;
-const zero = new Vector3(0, 0, 0);
-function render() {
-    requestAnimationFrame(render);
+cameraSettings.camera.position.x = 50;
+cameraSettings.activateControls({
+    rotateSpeed: 2,
+    panSpeed: 0.8,
+    staticMoving: true,
+    zoomSpeed: 2,
+});
+const time = new RenderLoop(cameraSettings, () => {
     renderer.render(scene, cameraSettings.camera);
-    cameraSettings.camera.position.x = 70*Math.cos(t);
-    cameraSettings.camera.position.y = 30;
-    cameraSettings.camera.position.z = 70*Math.sin(t);
-    cameraSettings.camera.lookAt(zero);
-    t+= Math.PI / 100;
-}
-
-render();
+});
