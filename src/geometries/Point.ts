@@ -16,6 +16,9 @@ export default class Point extends Hylomorphism<PointsMaterial, Points>
         super();
         this.primaMateria = PointsMaterial.bind(null, {vertexColors: VertexColors});
         this.morphe = Points;
-        this.pointMaps = [this.positionMap];
+    }
+
+    get pointMaps() {
+        return [this.positionMap];
     }
 } 
