@@ -1,7 +1,11 @@
 import { Color } from 'three';
 
-export function randInt(a: number, b: number) {
+export function randInt(a= 0, b=10) {
     return a + Math.floor(Math.random() * (b - a));
+}
+
+export function randomScalar() {
+    return randInt(0, 10);
 }
 
 export function randomColor() {

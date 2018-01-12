@@ -42,6 +42,7 @@ export abstract class Vector {
     positionMap: PointMap;
 }
 
+// Hylomorphism dimension maps
 export interface ColorMap {
     (datum: ramon.Datum): string | THREE.Color;
 }
@@ -50,9 +51,13 @@ export interface PointMap {
     (datum: ramon.Datum): [number, number, number];
 }
 
+export interface ScalarMap {
+    (datum: ramon.Datum): number;
+}
+
 export type VisMap = ColorMap | PointMap;
 
-// Rendering Classes
+// other three.js wrappers
 export class RenderLoop {
     renderFn: FrameRequestCallback;
     new(cameraSettings: CameraSettings,

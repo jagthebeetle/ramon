@@ -3,25 +3,15 @@ import {
     initialize, 
     datasetFromRange,
     CameraSettings,
-    Line,
+    Sphere,
     RenderLoop,
     World
-} from "../src";
+} from "../src/index";
 // API Demo
 const {scene, renderer} = initialize(document.getElementById('visualization'));
 const SCALE = 20;
 const POINTS = 60;
-const world = new World(datasetFromRange(POINTS), Line);
-world.set('fromMap', (d: ramon.Datum): [number, number, number] => {
-    const i = Number(d.val);
-    return [SCALE*Math.cos(2*Math.PI*i/10),
-            SCALE*Math.sin(2*Math.PI*i/10), i];
-});
-world.set('toMap', (d: ramon.Datum): [number, number, number] => {
-    const i = Number(d.val) + 1;
-    return [SCALE*Math.cos(2*Math.PI*i/10),
-            SCALE*Math.sin(2*Math.PI*i/10), i];
-});
+const world = new World(datasetFromRange(POINTS), Sphere);
 world.set('colorMap', (d: ramon.Datum) => {
     const i = Number(d.val);
     return `hsl(${360*i/POINTS}, 100%, 50%)`;
