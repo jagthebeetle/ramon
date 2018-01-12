@@ -1,23 +1,15 @@
 const path = require('path');
+const merge = require('webpack-merge');
+const webpackCommon = require('./webpack.common');
 
-module.exports = {
+const prod = {
     entry: './src/index.ts',
-    module: {
-        rules: [
-        {
-            test: /\.tsx?$/,
-            use: 'ts-loader',
-            exclude: /node_modules/
-        }
-        ]
-    },
-    resolve: {
-        extensions: [ '.tsx', '.ts', '.js' ]
-    },
     output: {
         filename: 'ramon.js',
         libraryTarget: 'umd',
         library: 'ramon',
         path: path.resolve(__dirname, 'dist')
-    }
+    },
 };
+
+module.exports = merge(webpackCommon, prod);
