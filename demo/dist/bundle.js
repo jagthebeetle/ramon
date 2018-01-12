@@ -241,8 +241,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 const { scene, renderer } = Object(__WEBPACK_IMPORTED_MODULE_1__src_index__["f" /* initialize */])(document.getElementById('visualization'));
 const SCALE = 20;
 const POINTS = 60;
-const world = new __WEBPACK_IMPORTED_MODULE_1__src_index__["d" /* World */](Object(__WEBPACK_IMPORTED_MODULE_1__src_index__["e" /* datasetFromRange */])(POINTS), __WEBPACK_IMPORTED_MODULE_1__src_index__["c" /* Sphere */]);
-world.set('colorMap', (d, i) => {
+const world = new __WEBPACK_IMPORTED_MODULE_1__src_index__["d" /* World */](Object(__WEBPACK_IMPORTED_MODULE_1__src_index__["e" /* datasetFromRange */])(POINTS), __WEBPACK_IMPORTED_MODULE_1__src_index__["c" /* Sphere */])
+    .set('colorMap', (d, i) => {
     return `hsl(${360 * i / POINTS}, 100%, 50%)`;
 });
 const visObjects = world.make();
@@ -1179,6 +1179,7 @@ class World {
     }
     set(key, fn) {
         this.maps[key] = fn;
+        return this;
     }
     make() {
         // Odd indirection required to trick TS into comparing these two.
@@ -1202,7 +1203,6 @@ class World {
             visObject[key] = this.maps[key];
         }
         /* tslint:enable */
-        console.info(visObject);
     }
 }
 /* harmony export (immutable) */ __webpack_exports__["a"] = World;

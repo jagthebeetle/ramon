@@ -5,8 +5,9 @@ export default class World<T extends ramon.Visualizable> {
     maps: {[key: string]: ramon.VisMap} = {};
     constructor(public dataset: ramon.Dataset, private ctor: new() => T) {}
 
-    set<K extends keyof T>(key: K, fn: T[K]) {
+    set<K extends keyof T>(key: K, fn: T[K]): this {
         this.maps[key] = fn;
+        return this;
     }
 
     make(): THREE.Object3D[] {
@@ -32,6 +33,5 @@ export default class World<T extends ramon.Visualizable> {
             visObject[(key as K)] = this.maps[key];
         }
         /* tslint:enable */
-        console.info(visObject);
     }
 }
