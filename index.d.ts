@@ -1,8 +1,8 @@
 import CameraSettings from "./src/CameraSettings";
 
-// Type definitions for [~THE LIBRARY NAME~] [~OPTIONAL VERSION NUMBER~]
-// Project: [~THE PROJECT NAME~]
-// Definitions by: [~YOUR NAME~] <[~A URL FOR YOU~]>
+// Type definitions for ramon 1.0.0
+// Project: ramon
+// Definitions by: jagthebeetle https://poet.computer
 
 export as namespace ramon;
 
