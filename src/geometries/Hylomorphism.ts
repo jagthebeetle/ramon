@@ -28,9 +28,11 @@ export default abstract class Hylomorphism<M extends THREE.Material,
         const colorCalculator = new Color();
         data.forEach((datum, i) => {
             positionMaps.forEach((map, j) => {
-                positionBuffer.set(map(datum), componentsPerObject*i + j*3);
+                positionBuffer.set(
+                    map(datum, i),
+                    componentsPerObject*i + j*3);
             });
-            const requestedColor = colorMap(datum);
+            const requestedColor = colorMap(datum, i);
             const color = (typeof requestedColor === 'string') ?
                 colorCalculator.set(requestedColor)
                 : requestedColor;
@@ -43,7 +45,7 @@ export default abstract class Hylomorphism<M extends THREE.Material,
         return [colorBuffer, positionBuffer];
     }
 
-    realize(data: ramon.Datum | ramon.Datum[]) {
+    realize(data: ramon.Datum | ramon.Datum[], i?: number) {
         if (!Array.isArray(data)) {
             data = [data];
         }

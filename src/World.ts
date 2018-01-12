@@ -18,10 +18,10 @@ export default class World<T extends ramon.Visualizable> {
                 this.setMaps(visObject);
                 return [visObject.realize(this.dataset.data)];
             default:
-                return this.dataset.data.map(datum => {
+                return this.dataset.data.map((datum, i) => {
                     const visObject = new this.ctor();
                     this.setMaps(visObject);
-                    return visObject.realize(datum);
+                    return visObject.realize(datum, i);
                 });
         }
     }

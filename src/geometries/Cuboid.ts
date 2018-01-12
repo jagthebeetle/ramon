@@ -20,15 +20,15 @@ export default class Cuboid extends Hylomorphism<MeshBasicMaterial, Mesh>
         this.morphe = Mesh;
     }
 
-    realize(datum: ramon.Datum) {
+    realize(datum: ramon.Datum, i: number) {
         this.geometry = new BoxBufferGeometry(
-            this.widthMap(datum),
-            this.heightMap(datum),
-            this.depthMap(datum)
+            this.widthMap(datum, i),
+            this.heightMap(datum, i),
+            this.depthMap(datum, i)
         );
         this.material = new this.primaMateria();
         this.eidos = new this.morphe(this.geometry, this.material);
-        const [x, y, z] = this.positionMap(datum);
+        const [x, y, z] = this.positionMap(datum, i);
         this.eidos.translateX(x);
         this.eidos.translateY(y);
         this.eidos.translateZ(z);

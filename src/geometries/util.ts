@@ -1,6 +1,6 @@
 import { Color } from 'three';
 
-export function randInt(a= 0, b=10) {
+export function randInt(a = 0, b = 10) {
     return a + Math.floor(Math.random() * (b - a));
 }
 

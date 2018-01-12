@@ -29,7 +29,7 @@ export interface Grouping<D extends ramon.Datum> {
 
 // Visualization Types
 export interface Visualizable {
-    realize(datum: ramon.Datum | ramon.Datum[]): THREE.Object3D;
+    realize(datum: ramon.Datum | ramon.Datum[], i?: number): THREE.Object3D;
     geometry: THREE.BufferGeometry;
     material: THREE.Material;
     eidos: THREE.Object3D;
@@ -44,18 +44,18 @@ export abstract class Vector {
 
 // Hylomorphism dimension maps
 export interface ColorMap {
-    (datum: ramon.Datum): string | THREE.Color;
+    (datum: ramon.Datum, i: number): string | THREE.Color;
 }
 
 export interface PointMap {
-    (datum: ramon.Datum): [number, number, number];
+    (datum: ramon.Datum, i: number): [number, number, number];
 }
 
 export interface ScalarMap {
-    (datum: ramon.Datum): number;
+    (datum: ramon.Datum, i: number): number;
 }
 
-export type VisMap = ColorMap | PointMap;
+export type VisMap = ColorMap | PointMap | ScalarMap;
 
 // other three.js wrappers
 export class RenderLoop {

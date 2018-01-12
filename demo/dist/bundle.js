@@ -123,9 +123,9 @@ class Hylomorphism {
         const colorCalculator = new __WEBPACK_IMPORTED_MODULE_0_three__["Color"]();
         data.forEach((datum, i) => {
             positionMaps.forEach((map, j) => {
-                positionBuffer.set(map(datum), componentsPerObject * i + j * 3);
+                positionBuffer.set(map(datum, i), componentsPerObject * i + j * 3);
             });
-            const requestedColor = colorMap(datum);
+            const requestedColor = colorMap(datum, i);
             const color = (typeof requestedColor === 'string') ?
                 colorCalculator.set(requestedColor)
                 : requestedColor;
@@ -136,7 +136,7 @@ class Hylomorphism {
         });
         return [colorBuffer, positionBuffer];
     }
-    realize(data) {
+    realize(data, i) {
         if (!Array.isArray(data)) {
             data = [data];
         }
@@ -242,8 +242,7 @@ const { scene, renderer } = Object(__WEBPACK_IMPORTED_MODULE_1__src_index__["f" 
 const SCALE = 20;
 const POINTS = 60;
 const world = new __WEBPACK_IMPORTED_MODULE_1__src_index__["d" /* World */](Object(__WEBPACK_IMPORTED_MODULE_1__src_index__["e" /* datasetFromRange */])(POINTS), __WEBPACK_IMPORTED_MODULE_1__src_index__["c" /* Sphere */]);
-world.set('colorMap', (d) => {
-    const i = Number(d.val);
+world.set('colorMap', (d, i) => {
     return `hsl(${360 * i / POINTS}, 100%, 50%)`;
 });
 const visObjects = world.make();
@@ -1078,11 +1077,11 @@ class Cuboid extends __WEBPACK_IMPORTED_MODULE_3__Hylomorphism__["a" /* default 
         });
         this.morphe = __WEBPACK_IMPORTED_MODULE_0_three__["Mesh"];
     }
-    realize(datum) {
-        this.geometry = new __WEBPACK_IMPORTED_MODULE_0_three__["BoxBufferGeometry"](this.widthMap(datum), this.heightMap(datum), this.depthMap(datum));
+    realize(datum, i) {
+        this.geometry = new __WEBPACK_IMPORTED_MODULE_0_three__["BoxBufferGeometry"](this.widthMap(datum, i), this.heightMap(datum, i), this.depthMap(datum, i));
         this.material = new this.primaMateria();
         this.eidos = new this.morphe(this.geometry, this.material);
-        const [x, y, z] = this.positionMap(datum);
+        const [x, y, z] = this.positionMap(datum, i);
         this.eidos.translateX(x);
         this.eidos.translateY(y);
         this.eidos.translateZ(z);
@@ -1121,11 +1120,11 @@ class Sphere extends __WEBPACK_IMPORTED_MODULE_3__Hylomorphism__["a" /* default 
         });
         this.morphe = __WEBPACK_IMPORTED_MODULE_0_three__["Mesh"];
     }
-    realize(datum) {
-        this.geometry = new __WEBPACK_IMPORTED_MODULE_0_three__["SphereBufferGeometry"](this.radiusMap(datum), this.longitudeSegments, this.latitudeSegments);
+    realize(datum, i) {
+        this.geometry = new __WEBPACK_IMPORTED_MODULE_0_three__["SphereBufferGeometry"](this.radiusMap(datum, i), this.longitudeSegments, this.latitudeSegments);
         this.material = new this.primaMateria();
         this.eidos = new this.morphe(this.geometry, this.material);
-        const [x, y, z] = this.positionMap(datum);
+        const [x, y, z] = this.positionMap(datum, i);
         this.eidos.translateX(x);
         this.eidos.translateY(y);
         this.eidos.translateZ(z);
@@ -1190,10 +1189,10 @@ class World {
                 this.setMaps(visObject);
                 return [visObject.realize(this.dataset.data)];
             default:
-                return this.dataset.data.map(datum => {
+                return this.dataset.data.map((datum, i) => {
                     const visObject = new this.ctor();
                     this.setMaps(visObject);
-                    return visObject.realize(datum);
+                    return visObject.realize(datum, i);
                 });
         }
     }
