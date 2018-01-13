@@ -7,8 +7,8 @@ import { datasetFromRange } from '../data';
 class TestObject extends Hylomorphism<THREE.MeshBasicMaterial, THREE.Mesh> {
     color = () => '#FACADE';
     pointMaps: ramon.PointMap[] = [];
-    primaMateria = MeshBasicMaterial;
-    morphe = Mesh;
+    hyle = MeshBasicMaterial;
+    ousia = Mesh;
 }
 
 describe('Hylomorphism', () => {
@@ -75,10 +75,10 @@ describe('Hylomorphism', () => {
     });
 
     describe('.realize()', () => {
-        it('should set .material to a new .primaMateria().', () => {
+        it('should set .material to a new .hyle().', () => {
             const testObject = new TestObject();
             class FancyMaterial extends MeshBasicMaterial {}
-            testObject.primaMateria = FancyMaterial;
+            testObject.hyle = FancyMaterial;
             testObject.realize(datasetFromRange(3).data);
             expect(testObject.material).to.be.an.instanceOf(FancyMaterial);
         });

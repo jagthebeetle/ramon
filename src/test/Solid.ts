@@ -14,14 +14,14 @@ class Plane extends Solid<PlaneBufferGeometry> {
 }
 
 describe('Solid', () => {
-    it('should have a default .morphe of Mesh.', () => {
+    it('should have a default .ousia of Mesh.', () => {
         const plane = new Plane(PlaneBufferGeometry);
-        expect(plane.morphe).to.equal(Mesh);
+        expect(plane.ousia).to.equal(Mesh);
     });
 
     it('should be able to produce a Material without arguments.', () => {
         const plane = new Plane(PlaneBufferGeometry);
-        expect(new plane.primaMateria()).to.be.an.instanceOf(MeshBasicMaterial);
+        expect(new plane.hyle()).to.be.an.instanceOf(MeshBasicMaterial);
     });
 
     describe('.realize()', () => {

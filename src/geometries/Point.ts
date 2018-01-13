@@ -13,10 +13,10 @@ export default class Point extends Hylomorphism<PointsMaterial, Points>
     constructor(public position: ramon.PointMap=randomPoint,
                 public color: ramon.ColorMap=randomColor) {
         super();
-        this.primaMateria = PointsMaterial.bind(null, 
+        this.hyle = PointsMaterial.bind(null, 
             {vertexColors: VertexColors}
         );
-        this.morphe = Points;
+        this.ousia = Points;
     }
 
     get pointMaps() {

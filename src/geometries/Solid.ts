@@ -14,27 +14,27 @@ export default abstract class Solid<G extends THREE.BufferGeometry>
      * wants it.
      */
     pointMaps: ramon.PointMap[];
-    constructor(public form: new (...dimensions: number[]) => G,
+    constructor(public morphe: new (...dimensions: number[]) => G,
                 ...dimensions: ramon.ScalarMap[]) {
         super();
-        this.primaMateria = MeshBasicMaterial.bind(null, {
+        this.hyle = MeshBasicMaterial.bind(null, {
             color: randomColor()
         });
-        this.morphe = Mesh;
+        this.ousia = Mesh;
     }
 
     /** @override */
     realize(datum: ramon.Datum, i: number) {
-        this.geometry = new this.form(
+        this.geometry = new this.morphe(
             ...this.dimensions.map((scalarMap, i) => scalarMap(datum, i))
         );
-        this.material = new this.primaMateria();
+        this.material = new this.hyle();
         if (this.color) {
             this.material.setValues({
                 color: standardizeColor(this.color(datum, i))
             });
         }
-        this.mesh = new this.morphe(this.geometry, this.material);
+        this.mesh = new this.ousia(this.geometry, this.material);
         const [x, y, z] = this.position(datum, i);
         this.mesh.translateX(x);
         this.mesh.translateY(y);

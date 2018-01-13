@@ -6,14 +6,23 @@ import {
 } from 'three';
 import { standardizeColor } from './util';
 
+/**
+ * Base abstract class for visible bodies (the result of a visualization),
+ * inspired by Aristotle's notion that all objects are made of form (morphe)
+ * and matter (hyle). The unqualified answer to "what is X?" is X's ousia, or
+ * essence, and we therefore have a pedantic nomenclature for the
+ * constructors that respectively create the three.js Geometry, Material, and
+ * Object3D.
+ */
 export default abstract class Hylomorphism<M extends THREE.Material,
                                            O extends THREE.Object3D>
                               implements ramon.Body {
-    geometry = new BufferGeometry();
-    mesh: O;
-    morphe: new(geometry: THREE.BufferGeometry, material: M) => O;
+    geometry: BufferGeometry;
     material: M;
-    primaMateria: new() => M;
+    mesh: O;
+    morphe: new () => BufferGeometry;
+    hyle: new() => M;
+    ousia: new(geometry: THREE.BufferGeometry, material: M) => O;
     color: ramon.ColorMap;
     abstract pointMaps: ramon.PointMap[];
 
@@ -47,7 +56,8 @@ export default abstract class Hylomorphism<M extends THREE.Material,
         if (!Array.isArray(data)) {
             data = [data];
         }
-        this.material = new this.primaMateria();
+        this.geometry = new this.morphe();
+        this.material = new this.hyle();
         const [colorBuffer, positionBuffer] = this.getGeometryBuffers(
                                                        data,
                                                        this.color,
@@ -58,7 +68,7 @@ export default abstract class Hylomorphism<M extends THREE.Material,
         this.geometry.addAttribute(
             'color',
             new Float32BufferAttribute(colorBuffer, 3));
-        this.mesh = new this.morphe(this.geometry, this.material);
+        this.mesh = new this.ousia(this.geometry, this.material);
         return this.mesh;
     }
 }
