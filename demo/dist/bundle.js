@@ -272,7 +272,7 @@ const { scene, renderer } = Object(__WEBPACK_IMPORTED_MODULE_1__src_index__["f" 
 const SCALE = 20;
 const POINTS = 60;
 const world = new __WEBPACK_IMPORTED_MODULE_1__src_index__["d" /* World */](Object(__WEBPACK_IMPORTED_MODULE_1__src_index__["e" /* datasetFromRange */])(POINTS), __WEBPACK_IMPORTED_MODULE_1__src_index__["c" /* Sphere */])
-    .set('colorMap', (d, i) => {
+    .set('color', (d, i) => {
     return `hsl(${360 * i / POINTS}, 100%, 50%)`;
 });
 const visObjects = world.make();
