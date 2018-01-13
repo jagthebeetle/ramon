@@ -32,12 +32,12 @@ describe('Hylomorphism', () => {
         });
 
         describe('first element of return value (color buffer):', () => {
-            it('should be: ' +
-               '[Color(colorMap(d)*pointMaps.length).toArray() for d in data], ' +
-               'flattened.', () => {
+            it('should be: [Color(colorMap(d)*pointMaps.length).toArray() ' +
+                           'for d in data], flattened.', () => {
                 const [color1,] = new TestObject().getGeometryBuffers(
-                                                    datasetFromRange(3).data,
-                                                    (d: ramon.Datum)=> `#FACAD${d.val}`);
+                    datasetFromRange(3).data,
+                    (d: ramon.Datum)=> `#FACAD${d.val}`
+                );
                 /* tslint:disable:no-unused-expression */
                 expect(color1).to.be.empty;
                 /* tslint:enable */
@@ -56,8 +56,10 @@ describe('Hylomorphism', () => {
         });
         
         describe('second element of return value (position buffer):', () => {
-            it('should be: [pt(d) for pt in pointMaps for d in data], flattened.', () => {
-                function datumToTriple(d: ramon.Datum): [number, number, number] {
+            it('should be: [pt(d) for pt in pointMaps for d in data], ' +
+               'flattened.', () => {
+                function datumToTriple(d: ramon.Datum): 
+                        [number, number, number] {
                     const i = 3*Number(d.val);
                     return [i, i+1, i+2];
                 }

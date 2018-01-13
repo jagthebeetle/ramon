@@ -16,7 +16,9 @@ export default class Line extends Hylomorphism<LineBasicMaterial, LineSegments>
                 public fromMap: ramon.PointMap=randomVector,
                 public toMap: ramon.PointMap=randomVector) {
         super();
-        this.primaMateria = LineBasicMaterial.bind(null, {vertexColors: VertexColors, linewidth: 2});
+        this.primaMateria = LineBasicMaterial.bind(null, 
+            {vertexColors: VertexColors, linewidth: 2}
+        );
         this.morphe = LineSegments;
     }
 
