@@ -1,8 +1,21 @@
 import CameraSettings from './CameraSettings';
 
 export default class RenderLoop {
+    /** 
+     * A lexically bound function that drives the main animation loop.
+     */
     private loop_: FrameRequestCallback;
+    /**
+     * The function called during each iteration of the loop.
+     */
     renderFn: FrameRequestCallback;
+    /**
+     * Sets up main animation loop. The provided `renderFn` will be called in
+     * the main loop if trackball controls have not been activated; otherwise,
+     * the function will be called on the trackball controls' `change` event.
+     * @param cameraSettings Configured `CameraSettings` object
+     * @param renderFn Function to call at each animation frame
+     */
     constructor(cameraSettings: CameraSettings,
                 renderFn: FrameRequestCallback) {
         this.renderFn = cameraSettings.controls ?

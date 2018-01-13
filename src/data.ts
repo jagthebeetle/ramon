@@ -36,6 +36,8 @@ export function group<D extends ramon.Datum>(data: D[], grouping: ramon.Grouping
     return result;
 }
 
+
+let nextDatasetId = 0;
 /**
  * Produces a dataset of integers under the optional field, up to provided
  * limit.
@@ -43,7 +45,6 @@ export function group<D extends ramon.Datum>(data: D[], grouping: ramon.Grouping
  * @param fieldName Field under which each datum will be contained, defaulting
  *                  to `val`.
  */
-let nextDatasetId = 0;
 export function datasetFromRange(upTo: number, fieldName='val'): ramon.Dataset {
     const data = [];
     for (let i = 0; i < upTo; ++i) {

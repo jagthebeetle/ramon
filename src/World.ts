@@ -1,15 +1,35 @@
 import Point from './geometries/Point';
 import Line from './geometries/Line';
 
+/**
+ * A `World` is a visualization configuration for a dataset. The motivating
+ * principle is that all data in a particular world get rendered as a
+ * particular `Visualizable` thing, according to certain functions from
+ * data to the spatial/visual domain. (See [[Hylomorphism]] for all such
+ * `Visualizable` classes.)
+ */
 export default class World<T extends ramon.Visualizable> {
+    /** Hash of `Visualizable` attribute to data-mapping function. */
     maps: {[key: string]: ramon.VisMap} = {};
     constructor(public dataset: ramon.Dataset, private ctor: new() => T) {}
 
+    /**
+     * Sets the mapping function for the specified visualization attribute.
+     * These will be used when objects are created in order to determine their
+     * final appearance.
+     * @param key A key on the Visualizable class
+     * @param fn The map function from data space to visualization space
+     */
     set<K extends keyof T>(key: K, fn: T[K]): this {
         this.maps[key] = fn;
         return this;
     }
 
+    /**
+     * After all maps have been set, create `Object3D` instance(s) and return
+     * them. The invocation is different for [[Line]]s and [[Point]]s since
+     * these support creating a single mesh.
+     */
     make(): THREE.Object3D[] {
         // Odd indirection required to trick TS into comparing these two.
         switch (this.ctor.prototype.constructor) {
@@ -27,6 +47,11 @@ export default class World<T extends ramon.Visualizable> {
         }
     }
 
+    /**
+     * Sets all provided map functions onto a {@link ramon.Visualizable}
+     * instance. This get called by `make()`. 
+     * @param visObject 
+     */
     setMaps<K extends keyof T>(visObject: T) {
         /* tslint:disable:forin */
         for (const key in this.maps) {
