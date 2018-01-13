@@ -5,6 +5,7 @@
   "main": "dist/ramon.js",
   "scripts": {
     "build": "webpack --config webpack.prod.js",
+    "cover": "nyc npm test",
     "gendocs": "typedoc index.d.ts src",
     "start": "webpack --watch --config demo/webpack.demo.js",
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha -r ts-node/register src/test/**/*.ts"
@@ -30,6 +31,7 @@
     "@types/three": "^0.89.2",
     "chai": "^4.1.2",
     "mocha": "^4.1.0",
+    "nyc": "^11.4.1",
     "ts-loader": "^3.2.0",
     "ts-node": "^4.1.0",
     "tslint": "^5.8.0",
@@ -41,5 +43,25 @@
   "dependencies": {
     "three": "^0.89.0",
     "three-trackballcontrols": "0.0.7"
+  },
+  "nyc": {
+    "include": [
+      "src/*.ts",
+      "src/**/*.ts"
+    ],
+    "exclude": [
+      "**/*.d.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "json",
+      "html"
+    ],
+    "all": true
   }
 }
