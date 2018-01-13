@@ -11,3 +11,7 @@ export function randomScalar() {
 export function randomColor() {
     return new Color(randInt(0x000000, 0x1000000));
 }
+
+export function toFunction<T>(x: T): () => T {
+    return () => x;
+}

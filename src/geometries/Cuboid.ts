@@ -4,33 +4,19 @@ import {
     MeshBasicMaterial
 } from 'three';
 import {randomColor, randomScalar} from './util';
-import Hylomorphism from './Hylomorphism';
+import Solid from './Solid';
 import {randomVector} from './Vector';
 
-export default class Cuboid extends Hylomorphism<MeshBasicMaterial, Mesh>
+export default class Cuboid extends Solid<BoxBufferGeometry>
                            implements ramon.Vector, ramon.ColorfulObject {
     constructor(public widthMap: ramon.ScalarMap=randomScalar,
                 public heightMap: ramon.ScalarMap=randomScalar,
                 public depthMap: ramon.ScalarMap=randomScalar,
                 public positionMap: ramon.PointMap=randomVector) {
-        super();
-        this.primaMateria = MeshBasicMaterial.bind(null, {
-            color: randomColor()});
-        this.morphe = Mesh;
+        super(BoxBufferGeometry);
     }
 
-    realize(datum: ramon.Datum, i: number) {
-        this.geometry = new BoxBufferGeometry(
-            this.widthMap(datum, i),
-            this.heightMap(datum, i),
-            this.depthMap(datum, i)
-        );
-        this.material = new this.primaMateria();
-        this.eidos = new this.morphe(this.geometry, this.material);
-        const [x, y, z] = this.positionMap(datum, i);
-        this.eidos.translateX(x);
-        this.eidos.translateY(y);
-        this.eidos.translateZ(z);
-        return this.eidos;
+    get dimensions() {
+        return [this.widthMap, this.heightMap, this.depthMap];
     }
 }
