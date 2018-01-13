@@ -11,14 +11,14 @@ export default class Sphere extends Solid<SphereBufferGeometry>
                             implements ramon.Vector, ramon.Colorful {
     latitudeSegments = 30;
     longitudeSegments = 30;
-    constructor(public radiusMap: ramon.ScalarMap=randomScalar,
+    constructor(public radius: ramon.ScalarMap=randomScalar,
                 public positionMap: ramon.PointMap=randomVector) {
         super(SphereBufferGeometry);
     }
     
     get dimensions() {
         return [
-            this.radiusMap, 
+            this.radius, 
             toFunction(this.latitudeSegments),
             toFunction(this.longitudeSegments)
         ];

@@ -1146,16 +1146,16 @@ class Cuboid extends __WEBPACK_IMPORTED_MODULE_2__Solid__["a" /* default */] {
 
 
 class Sphere extends __WEBPACK_IMPORTED_MODULE_2__Solid__["a" /* default */] {
-    constructor(radiusMap = __WEBPACK_IMPORTED_MODULE_1__util__["c" /* randomScalar */], positionMap = __WEBPACK_IMPORTED_MODULE_3__Vector__["a" /* randomVector */]) {
+    constructor(radius = __WEBPACK_IMPORTED_MODULE_1__util__["c" /* randomScalar */], positionMap = __WEBPACK_IMPORTED_MODULE_3__Vector__["a" /* randomVector */]) {
         super(__WEBPACK_IMPORTED_MODULE_0_three__["SphereBufferGeometry"]);
-        this.radiusMap = radiusMap;
+        this.radius = radius;
         this.positionMap = positionMap;
         this.latitudeSegments = 30;
         this.longitudeSegments = 30;
     }
     get dimensions() {
         return [
-            this.radiusMap,
+            this.radius,
             Object(__WEBPACK_IMPORTED_MODULE_1__util__["d" /* toFunction */])(this.latitudeSegments),
             Object(__WEBPACK_IMPORTED_MODULE_1__util__["d" /* toFunction */])(this.longitudeSegments)
         ];
