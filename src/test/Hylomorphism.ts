@@ -84,7 +84,7 @@ describe('Hylomorphism', () => {
         });
         it('should set the position and color attributes of .geometry.', () => {
             const testObject = new TestObject();
-            testObject.colorMap = () => '#facade';
+            testObject.color = () => '#facade';
             testObject.pointMaps = [() => [0, 0, 0]];
             testObject.realize(datasetFromRange(2).data);
             expect(testObject.geometry.getAttribute('color').array)
@@ -94,7 +94,7 @@ describe('Hylomorphism', () => {
         });
         it('should make an Object3D.', () => {
             const testObject = new TestObject();
-            testObject.colorMap = () => '#facade';
+            testObject.color = () => '#facade';
             testObject.pointMaps = [() => [0, 0, 0]];
             testObject.realize(datasetFromRange(1).data);
             expect(testObject.eidos).to.be.an.instanceOf(Mesh);
