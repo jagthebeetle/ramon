@@ -13,7 +13,7 @@ export default abstract class Hylomorphism<M extends THREE.Material,
     morphe: new(geometry: THREE.BufferGeometry, material: M) => O;
     material: M;
     primaMateria: new() => M;
-    colorMap: ramon.ColorMap;
+    color: ramon.ColorMap;
     pointMaps: ramon.PointMap[];
 
     getGeometryBuffers(
@@ -52,7 +52,7 @@ export default abstract class Hylomorphism<M extends THREE.Material,
         this.material = new this.primaMateria();
         const [colorBuffer, positionBuffer] = this.getGeometryBuffers(
                                                        data,
-                                                       this.colorMap,
+                                                       this.color,
                                                        ...this.pointMaps);
         this.geometry.addAttribute(
             'position',

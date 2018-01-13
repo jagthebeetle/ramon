@@ -8,7 +8,7 @@ import Solid from './Solid';
 import {randomVector} from './Vector';
 
 export default class Sphere extends Solid<SphereBufferGeometry>
-                            implements ramon.Vector, ramon.ColorfulObject {
+                            implements ramon.Vector, ramon.Colorful {
     latitudeSegments = 30;
     longitudeSegments = 30;
     constructor(public radiusMap: ramon.ScalarMap=randomScalar,

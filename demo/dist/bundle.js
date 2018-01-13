@@ -147,7 +147,7 @@ class Hylomorphism {
             data = [data];
         }
         this.material = new this.primaMateria();
-        const [colorBuffer, positionBuffer] = this.getGeometryBuffers(data, this.colorMap, ...this.pointMaps);
+        const [colorBuffer, positionBuffer] = this.getGeometryBuffers(data, this.color, ...this.pointMaps);
         this.geometry.addAttribute('position', new __WEBPACK_IMPORTED_MODULE_0_three__["Float32BufferAttribute"](positionBuffer, 3));
         this.geometry.addAttribute('color', new __WEBPACK_IMPORTED_MODULE_0_three__["Float32BufferAttribute"](colorBuffer, 3));
         this.eidos = new this.morphe(this.geometry, this.material);
@@ -210,9 +210,9 @@ class Solid extends __WEBPACK_IMPORTED_MODULE_0__Hylomorphism__["a" /* default *
 
 
 class Line extends __WEBPACK_IMPORTED_MODULE_3__Hylomorphism__["a" /* default */] {
-    constructor(colorMap = __WEBPACK_IMPORTED_MODULE_1__util__["b" /* randomColor */], fromMap = __WEBPACK_IMPORTED_MODULE_2__Vector__["a" /* randomVector */], toMap = __WEBPACK_IMPORTED_MODULE_2__Vector__["a" /* randomVector */]) {
+    constructor(color = __WEBPACK_IMPORTED_MODULE_1__util__["b" /* randomColor */], fromMap = __WEBPACK_IMPORTED_MODULE_2__Vector__["a" /* randomVector */], toMap = __WEBPACK_IMPORTED_MODULE_2__Vector__["a" /* randomVector */]) {
         super();
-        this.colorMap = colorMap;
+        this.color = color;
         this.fromMap = fromMap;
         this.toMap = toMap;
         this.primaMateria = __WEBPACK_IMPORTED_MODULE_0_three__["LineBasicMaterial"].bind(null, { vertexColors: __WEBPACK_IMPORTED_MODULE_0_three__["VertexColors"], linewidth: 2 });
@@ -241,10 +241,10 @@ class Line extends __WEBPACK_IMPORTED_MODULE_3__Hylomorphism__["a" /* default */
 
 
 class Point extends __WEBPACK_IMPORTED_MODULE_3__Hylomorphism__["a" /* default */] {
-    constructor(positionMap = __WEBPACK_IMPORTED_MODULE_2__Vector__["a" /* randomVector */], colorMap = __WEBPACK_IMPORTED_MODULE_1__util__["b" /* randomColor */]) {
+    constructor(positionMap = __WEBPACK_IMPORTED_MODULE_2__Vector__["a" /* randomVector */], color = __WEBPACK_IMPORTED_MODULE_1__util__["b" /* randomColor */]) {
         super();
         this.positionMap = positionMap;
-        this.colorMap = colorMap;
+        this.color = color;
         this.primaMateria = __WEBPACK_IMPORTED_MODULE_0_three__["PointsMaterial"].bind(null, { vertexColors: __WEBPACK_IMPORTED_MODULE_0_three__["VertexColors"] });
         this.morphe = __WEBPACK_IMPORTED_MODULE_0_three__["Points"];
     }
@@ -1183,8 +1183,8 @@ class RenderLoop {
             cameraSettings.controls.update :
             renderFn;
         if (cameraSettings.controls) {
-            cameraSettings.controls.addEventListener('change', (event) => {
-                renderFn(event.timeStamp);
+            cameraSettings.controls.addEventListener('change', ({ timeStamp }) => {
+                renderFn(timeStamp);
             });
             renderFn(0);
         }

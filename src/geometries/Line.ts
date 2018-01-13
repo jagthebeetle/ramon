@@ -11,8 +11,8 @@ import {randomVector} from './Vector';
 import Hylomorphism from './Hylomorphism';
 
 export default class Line extends Hylomorphism<LineBasicMaterial, LineSegments>
-                          implements ramon.ColorfulObject {
-    constructor(public colorMap: ramon.ColorMap=randomColor,
+                          implements ramon.Colorful {
+    constructor(public color: ramon.ColorMap=randomColor,
                 public fromMap: ramon.PointMap=randomVector,
                 public toMap: ramon.PointMap=randomVector) {
         super();

@@ -35,8 +35,8 @@ export interface Visualizable {
     eidos: THREE.Object3D;
 }
 
-export interface ColorfulObject {
-    colorMap: ColorMap;
+export interface Colorful {
+    color: ColorMap;
 }
 export interface Vector {
     positionMap: PointMap;
