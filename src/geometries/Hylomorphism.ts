@@ -4,6 +4,7 @@ import {
     Float32BufferAttribute,
     Material
 } from 'three';
+import { standardizeColor } from './util';
 
 export default abstract class Hylomorphism<M extends THREE.Material,
                                            O extends THREE.Object3D>
@@ -25,7 +26,6 @@ export default abstract class Hylomorphism<M extends THREE.Material,
         const bufferLength = componentsPerObject*data.length;
         const positionBuffer = new Float32Array(bufferLength);
         const colorBuffer = new Float32Array(bufferLength);
-        const colorCalculator = new Color();
         data.forEach((datum, i) => {
             positionMaps.forEach((map, j) => {
                 positionBuffer.set(
@@ -33,9 +33,7 @@ export default abstract class Hylomorphism<M extends THREE.Material,
                     componentsPerObject*i + j*3);
             });
             const requestedColor = colorMap(datum, i);
-            const color = (typeof requestedColor === 'string') ?
-                colorCalculator.set(requestedColor)
-                : requestedColor;
+            const color = standardizeColor(requestedColor);
             const rgb = color.toArray();
             for (let p = 0; p < pointsPerObject; ++p) {
                 colorBuffer.set(rgb, componentsPerObject*i + 3*p);

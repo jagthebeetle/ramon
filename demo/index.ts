@@ -12,6 +12,14 @@ const {scene, renderer} = initialize(document.getElementById('visualization'));
 const SCALE = 20;
 const POINTS = 60;
 const world = new World(datasetFromRange(POINTS), Sphere)
+    .set('radius', () => 0.1)
+    .set('position', (d: ramon.Datum, i: number): [number, number, number] => {
+        return [
+            10*Math.sin(4*Math.PI * i / POINTS),
+            i,
+            10*Math.cos(4*Math.PI * i / POINTS)
+        ];
+    })
     .set('color', (d: ramon.Datum, i: number) => {
         return `hsl(${360*i/POINTS}, 100%, 50%)`;
     });

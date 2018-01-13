@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -74,24 +74,39 @@ module.exports = THREE;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = randInt;
+/* unused harmony export randInt */
+/* harmony export (immutable) */ __webpack_exports__["b"] = randomPoint;
 /* harmony export (immutable) */ __webpack_exports__["c"] = randomScalar;
-/* harmony export (immutable) */ __webpack_exports__["b"] = randomColor;
-/* harmony export (immutable) */ __webpack_exports__["d"] = toFunction;
+/* harmony export (immutable) */ __webpack_exports__["a"] = randomColor;
+/* harmony export (immutable) */ __webpack_exports__["e"] = toFunction;
+/* harmony export (immutable) */ __webpack_exports__["d"] = standardizeColor;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_three__);
 
+/** Random integer between a (inclusive) and b (exclusive). */
 function randInt(a = 0, b = 10) {
     return a + Math.floor(Math.random() * (b - a));
 }
+/** Array of three random numbers, from -50 to 49 (inclusive). */
+function randomPoint() {
+    return [randInt(-50, 50), randInt(-50, 50), randInt(-50, 50)];
+}
+/** Random number 0-9 inclusive, for small attributes. */
 function randomScalar() {
     return randInt(0, 10);
 }
+/** Random THREE.Color, sampled from entire RGB space. */
 function randomColor() {
     return new __WEBPACK_IMPORTED_MODULE_0_three__["Color"](randInt(0x000000, 0x1000000));
 }
+/** Returns a function that returns the provided value. */
 function toFunction(x) {
     return () => x;
+}
+const colorCalculator = new __WEBPACK_IMPORTED_MODULE_0_three__["Color"]();
+function standardizeColor(colorOrString) {
+    return (typeof colorOrString === 'string') ?
+        colorCalculator.set(colorOrString) : colorOrString;
 }
 
 
@@ -100,21 +115,10 @@ function toFunction(x) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = randomVector;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__(1);
-
-function randomVector(datum) {
-    return [Object(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* randInt */])(-50, 50), Object(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* randInt */])(-50, 50), Object(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* randInt */])(-50, 50)];
-}
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_three__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__(1);
+
 
 class Hylomorphism {
     constructor() {
@@ -126,15 +130,12 @@ class Hylomorphism {
         const bufferLength = componentsPerObject * data.length;
         const positionBuffer = new Float32Array(bufferLength);
         const colorBuffer = new Float32Array(bufferLength);
-        const colorCalculator = new __WEBPACK_IMPORTED_MODULE_0_three__["Color"]();
         data.forEach((datum, i) => {
             positionMaps.forEach((map, j) => {
                 positionBuffer.set(map(datum, i), componentsPerObject * i + j * 3);
             });
             const requestedColor = colorMap(datum, i);
-            const color = (typeof requestedColor === 'string') ?
-                colorCalculator.set(requestedColor)
-                : requestedColor;
+            const color = Object(__WEBPACK_IMPORTED_MODULE_1__util__["d" /* standardizeColor */])(requestedColor);
             const rgb = color.toArray();
             for (let p = 0; p < pointsPerObject; ++p) {
                 colorBuffer.set(rgb, componentsPerObject * i + 3 * p);
@@ -159,11 +160,11 @@ class Hylomorphism {
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Hylomorphism__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Hylomorphism__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_three__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_three__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__(1);
@@ -174,17 +175,22 @@ class Solid extends __WEBPACK_IMPORTED_MODULE_0__Hylomorphism__["a" /* default *
     constructor(form, ...dimensions) {
         super();
         this.form = form;
-        this.dimensions = [];
         this.primaMateria = __WEBPACK_IMPORTED_MODULE_1_three__["MeshBasicMaterial"].bind(null, {
-            color: Object(__WEBPACK_IMPORTED_MODULE_2__util__["b" /* randomColor */])()
+            color: Object(__WEBPACK_IMPORTED_MODULE_2__util__["a" /* randomColor */])()
         });
         this.morphe = __WEBPACK_IMPORTED_MODULE_1_three__["Mesh"];
     }
+    /** @override */
     realize(datum, i) {
         this.geometry = new this.form(...this.dimensions.map((scalarMap, i) => scalarMap(datum, i)));
         this.material = new this.primaMateria();
+        if (this.color) {
+            this.material.setValues({
+                color: Object(__WEBPACK_IMPORTED_MODULE_2__util__["d" /* standardizeColor */])(this.color(datum, i))
+            });
+        }
         this.eidos = new this.morphe(this.geometry, this.material);
-        const [x, y, z] = this.positionMap(datum, i);
+        const [x, y, z] = this.position(datum, i);
         this.eidos.translateX(x);
         this.eidos.translateY(y);
         this.eidos.translateZ(z);
@@ -196,6 +202,35 @@ class Solid extends __WEBPACK_IMPORTED_MODULE_0__Hylomorphism__["a" /* default *
 
 
 /***/ }),
+/* 4 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_three__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Hylomorphism__ = __webpack_require__(2);
+
+
+
+class Line extends __WEBPACK_IMPORTED_MODULE_2__Hylomorphism__["a" /* default */] {
+    constructor(color = __WEBPACK_IMPORTED_MODULE_1__util__["a" /* randomColor */], from = __WEBPACK_IMPORTED_MODULE_1__util__["b" /* randomPoint */], to = __WEBPACK_IMPORTED_MODULE_1__util__["b" /* randomPoint */]) {
+        super();
+        this.color = color;
+        this.from = from;
+        this.to = to;
+        this.primaMateria = __WEBPACK_IMPORTED_MODULE_0_three__["LineBasicMaterial"].bind(null, { vertexColors: __WEBPACK_IMPORTED_MODULE_0_three__["VertexColors"], linewidth: 2 });
+        this.morphe = __WEBPACK_IMPORTED_MODULE_0_three__["LineSegments"];
+    }
+    get pointMaps() {
+        return [this.from, this.to];
+    }
+}
+/* harmony export (immutable) */ __webpack_exports__["a"] = Line;
+
+
+
+/***/ }),
 /* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -203,26 +238,23 @@ class Solid extends __WEBPACK_IMPORTED_MODULE_0__Hylomorphism__["a" /* default *
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_three__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Vector__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Hylomorphism__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Hylomorphism__ = __webpack_require__(2);
 
 
 
-
-class Line extends __WEBPACK_IMPORTED_MODULE_3__Hylomorphism__["a" /* default */] {
-    constructor(color = __WEBPACK_IMPORTED_MODULE_1__util__["b" /* randomColor */], fromMap = __WEBPACK_IMPORTED_MODULE_2__Vector__["a" /* randomVector */], toMap = __WEBPACK_IMPORTED_MODULE_2__Vector__["a" /* randomVector */]) {
+class Point extends __WEBPACK_IMPORTED_MODULE_2__Hylomorphism__["a" /* default */] {
+    constructor(position = __WEBPACK_IMPORTED_MODULE_1__util__["b" /* randomPoint */], color = __WEBPACK_IMPORTED_MODULE_1__util__["a" /* randomColor */]) {
         super();
+        this.position = position;
         this.color = color;
-        this.fromMap = fromMap;
-        this.toMap = toMap;
-        this.primaMateria = __WEBPACK_IMPORTED_MODULE_0_three__["LineBasicMaterial"].bind(null, { vertexColors: __WEBPACK_IMPORTED_MODULE_0_three__["VertexColors"], linewidth: 2 });
-        this.morphe = __WEBPACK_IMPORTED_MODULE_0_three__["LineSegments"];
+        this.primaMateria = __WEBPACK_IMPORTED_MODULE_0_three__["PointsMaterial"].bind(null, { vertexColors: __WEBPACK_IMPORTED_MODULE_0_three__["VertexColors"] });
+        this.morphe = __WEBPACK_IMPORTED_MODULE_0_three__["Points"];
     }
     get pointMaps() {
-        return [this.fromMap, this.toMap];
+        return [this.position];
     }
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = Line;
+/* harmony export (immutable) */ __webpack_exports__["a"] = Point;
 
 
 
@@ -231,40 +263,10 @@ class Line extends __WEBPACK_IMPORTED_MODULE_3__Hylomorphism__["a" /* default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_three__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Vector__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Hylomorphism__ = __webpack_require__(3);
-
-
-
-
-class Point extends __WEBPACK_IMPORTED_MODULE_3__Hylomorphism__["a" /* default */] {
-    constructor(positionMap = __WEBPACK_IMPORTED_MODULE_2__Vector__["a" /* randomVector */], color = __WEBPACK_IMPORTED_MODULE_1__util__["b" /* randomColor */]) {
-        super();
-        this.positionMap = positionMap;
-        this.color = color;
-        this.primaMateria = __WEBPACK_IMPORTED_MODULE_0_three__["PointsMaterial"].bind(null, { vertexColors: __WEBPACK_IMPORTED_MODULE_0_three__["VertexColors"] });
-        this.morphe = __WEBPACK_IMPORTED_MODULE_0_three__["Points"];
-    }
-    get pointMaps() {
-        return [this.positionMap];
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Point;
-
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_three__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_index__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_index__ = __webpack_require__(7);
 
 
 // API Demo
@@ -272,6 +274,14 @@ const { scene, renderer } = Object(__WEBPACK_IMPORTED_MODULE_1__src_index__["f" 
 const SCALE = 20;
 const POINTS = 60;
 const world = new __WEBPACK_IMPORTED_MODULE_1__src_index__["d" /* World */](Object(__WEBPACK_IMPORTED_MODULE_1__src_index__["e" /* datasetFromRange */])(POINTS), __WEBPACK_IMPORTED_MODULE_1__src_index__["c" /* Sphere */])
+    .set('radius', () => 0.1)
+    .set('position', (d, i) => {
+    return [
+        10 * Math.sin(4 * Math.PI * i / POINTS),
+        i,
+        10 * Math.cos(4 * Math.PI * i / POINTS)
+    ];
+})
     .set('color', (d, i) => {
     return `hsl(${360 * i / POINTS}, 100%, 50%)`;
 });
@@ -291,28 +301,28 @@ const time = new __WEBPACK_IMPORTED_MODULE_1__src_index__["b" /* RenderLoop */](
 
 
 /***/ }),
-/* 8 */
+/* 7 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["f"] = initialize;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_three__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data__ = __webpack_require__(8);
 /* harmony namespace reexport (by used) */ __webpack_require__.d(__webpack_exports__, "e", function() { return __WEBPACK_IMPORTED_MODULE_1__data__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__CameraSettings__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__CameraSettings__ = __webpack_require__(9);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_2__CameraSettings__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__geometries_Cuboid__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__geometries_Cuboid__ = __webpack_require__(11);
 /* unused harmony reexport Cuboid */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__geometries_Line__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__geometries_Line__ = __webpack_require__(4);
 /* unused harmony reexport Line */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__geometries_Point__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__geometries_Point__ = __webpack_require__(5);
 /* unused harmony reexport Point */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__geometries_Sphere__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__geometries_Sphere__ = __webpack_require__(12);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return __WEBPACK_IMPORTED_MODULE_6__geometries_Sphere__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__RenderLoop__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__RenderLoop__ = __webpack_require__(13);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return __WEBPACK_IMPORTED_MODULE_7__RenderLoop__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__World__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__World__ = __webpack_require__(14);
 /* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return __WEBPACK_IMPORTED_MODULE_8__World__["a"]; });
 
 
@@ -339,7 +349,7 @@ function initialize(container = document.body) {
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -395,13 +405,13 @@ function datasetFromRange(upTo, fieldName = 'val') {
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_three__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_three_trackballcontrols__ = __webpack_require__(11);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_three_trackballcontrols__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_three_trackballcontrols___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_three_trackballcontrols__);
 
 
@@ -440,7 +450,7 @@ class CameraSettings {
 
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -1102,29 +1112,27 @@ TrackballControls.prototype = Object.create( THREE.EventDispatcher.prototype );
 
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_three__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Solid__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Vector__ = __webpack_require__(2);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Solid__ = __webpack_require__(3);
 
 
 
 class Cuboid extends __WEBPACK_IMPORTED_MODULE_2__Solid__["a" /* default */] {
-    constructor(widthMap = __WEBPACK_IMPORTED_MODULE_1__util__["c" /* randomScalar */], heightMap = __WEBPACK_IMPORTED_MODULE_1__util__["c" /* randomScalar */], depthMap = __WEBPACK_IMPORTED_MODULE_1__util__["c" /* randomScalar */], positionMap = __WEBPACK_IMPORTED_MODULE_3__Vector__["a" /* randomVector */]) {
+    constructor(width = __WEBPACK_IMPORTED_MODULE_1__util__["c" /* randomScalar */], height = __WEBPACK_IMPORTED_MODULE_1__util__["c" /* randomScalar */], depth = __WEBPACK_IMPORTED_MODULE_1__util__["c" /* randomScalar */], position = __WEBPACK_IMPORTED_MODULE_1__util__["b" /* randomPoint */]) {
         super(__WEBPACK_IMPORTED_MODULE_0_three__["BoxBufferGeometry"]);
-        this.widthMap = widthMap;
-        this.heightMap = heightMap;
-        this.depthMap = depthMap;
-        this.positionMap = positionMap;
+        this.width = width;
+        this.height = height;
+        this.depth = depth;
+        this.position = position;
     }
     get dimensions() {
-        return [this.widthMap, this.heightMap, this.depthMap];
+        return [this.width, this.height, this.depth];
     }
 }
 /* unused harmony export default */
@@ -1132,32 +1140,30 @@ class Cuboid extends __WEBPACK_IMPORTED_MODULE_2__Solid__["a" /* default */] {
 
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_three__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Solid__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Vector__ = __webpack_require__(2);
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Solid__ = __webpack_require__(3);
 
 
 
 class Sphere extends __WEBPACK_IMPORTED_MODULE_2__Solid__["a" /* default */] {
-    constructor(radius = __WEBPACK_IMPORTED_MODULE_1__util__["c" /* randomScalar */], positionMap = __WEBPACK_IMPORTED_MODULE_3__Vector__["a" /* randomVector */]) {
+    constructor(radius = __WEBPACK_IMPORTED_MODULE_1__util__["c" /* randomScalar */], position = __WEBPACK_IMPORTED_MODULE_1__util__["b" /* randomPoint */]) {
         super(__WEBPACK_IMPORTED_MODULE_0_three__["SphereBufferGeometry"]);
         this.radius = radius;
-        this.positionMap = positionMap;
+        this.position = position;
         this.latitudeSegments = 30;
         this.longitudeSegments = 30;
     }
     get dimensions() {
         return [
             this.radius,
-            Object(__WEBPACK_IMPORTED_MODULE_1__util__["d" /* toFunction */])(this.latitudeSegments),
-            Object(__WEBPACK_IMPORTED_MODULE_1__util__["d" /* toFunction */])(this.longitudeSegments)
+            Object(__WEBPACK_IMPORTED_MODULE_1__util__["e" /* toFunction */])(this.latitudeSegments),
+            Object(__WEBPACK_IMPORTED_MODULE_1__util__["e" /* toFunction */])(this.longitudeSegments)
         ];
     }
 }
@@ -1166,7 +1172,7 @@ class Sphere extends __WEBPACK_IMPORTED_MODULE_2__Solid__["a" /* default */] {
 
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1200,12 +1206,12 @@ class RenderLoop {
 
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__geometries_Point__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__geometries_Line__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__geometries_Point__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__geometries_Line__ = __webpack_require__(4);
 
 
 /**

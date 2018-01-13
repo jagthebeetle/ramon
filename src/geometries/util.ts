@@ -24,3 +24,9 @@ export function randomColor() {
 export function toFunction<T>(x: T): () => T {
     return () => x;
 }
+
+const colorCalculator = new Color();
+export function standardizeColor(colorOrString: string | Color) {
+    return (typeof colorOrString === 'string') ?
+        colorCalculator.set(colorOrString) : colorOrString;
+}
