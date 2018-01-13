@@ -9,14 +9,14 @@ import {randomVector} from './Vector';
 
 export default class Cuboid extends Solid<BoxBufferGeometry>
                            implements ramon.Vector, ramon.Colorful {
-    constructor(public widthMap: ramon.ScalarMap=randomScalar,
-                public heightMap: ramon.ScalarMap=randomScalar,
-                public depthMap: ramon.ScalarMap=randomScalar,
+    constructor(public width: ramon.ScalarMap=randomScalar,
+                public height: ramon.ScalarMap=randomScalar,
+                public depth: ramon.ScalarMap=randomScalar,
                 public positionMap: ramon.PointMap=randomVector) {
         super(BoxBufferGeometry);
     }
 
     get dimensions() {
-        return [this.widthMap, this.heightMap, this.depthMap];
+        return [this.width, this.height, this.depth];
     }
 }
