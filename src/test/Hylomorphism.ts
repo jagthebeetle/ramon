@@ -97,7 +97,7 @@ describe('Hylomorphism', () => {
             testObject.color = () => '#facade';
             testObject.pointMaps = [() => [0, 0, 0]];
             testObject.realize(datasetFromRange(1).data);
-            expect(testObject.eidos).to.be.an.instanceOf(Mesh);
+            expect(testObject.mesh).to.be.an.instanceOf(Mesh);
         });
     });
 });

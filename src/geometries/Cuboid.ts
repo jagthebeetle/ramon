@@ -6,8 +6,7 @@ import {
 import {randomColor, randomPoint, randomScalar} from './util';
 import Solid from './Solid';
 
-export default class Cuboid extends Solid<BoxBufferGeometry>
-                           implements ramon.Vector, ramon.Colorful {
+export default class Cuboid extends Solid<BoxBufferGeometry> {
     constructor(public width: ramon.ScalarMap=randomScalar,
                 public height: ramon.ScalarMap=randomScalar,
                 public depth: ramon.ScalarMap=randomScalar,

@@ -4,7 +4,7 @@ import { randomColor, standardizeColor } from "./util";
 
 export default abstract class Solid<G extends THREE.BufferGeometry>
                               extends Hylomorphism<MeshBasicMaterial, Mesh>
-                              implements ramon.Vector {
+                              implements ramon.Vector, ramon.Colorful {
     abstract dimensions: ramon.ScalarMap[];
     abstract position: ramon.PointMap;
     /** 
@@ -34,11 +34,11 @@ export default abstract class Solid<G extends THREE.BufferGeometry>
                 color: standardizeColor(this.color(datum, i))
             });
         }
-        this.eidos = new this.morphe(this.geometry, this.material);
+        this.mesh = new this.morphe(this.geometry, this.material);
         const [x, y, z] = this.position(datum, i);
-        this.eidos.translateX(x);
-        this.eidos.translateY(y);
-        this.eidos.translateZ(z);
-        return this.eidos;
+        this.mesh.translateX(x);
+        this.mesh.translateY(y);
+        this.mesh.translateZ(z);
+        return this.mesh;
     }
 }

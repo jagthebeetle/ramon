@@ -10,7 +10,7 @@ export default abstract class Hylomorphism<M extends THREE.Material,
                                            O extends THREE.Object3D>
                               implements ramon.Body {
     geometry = new BufferGeometry();
-    eidos: O;
+    mesh: O;
     morphe: new(geometry: THREE.BufferGeometry, material: M) => O;
     material: M;
     primaMateria: new() => M;
@@ -58,7 +58,7 @@ export default abstract class Hylomorphism<M extends THREE.Material,
         this.geometry.addAttribute(
             'color',
             new Float32BufferAttribute(colorBuffer, 3));
-        this.eidos = new this.morphe(this.geometry, this.material);
-        return this.eidos;
+        this.mesh = new this.morphe(this.geometry, this.material);
+        return this.mesh;
     }
 }

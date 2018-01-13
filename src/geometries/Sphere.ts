@@ -6,8 +6,7 @@ import {
 import {randomColor, randomPoint, randomScalar, toFunction} from './util';
 import Solid from './Solid';
 
-export default class Sphere extends Solid<SphereBufferGeometry>
-                            implements ramon.Vector, ramon.Colorful {
+export default class Sphere extends Solid<SphereBufferGeometry> {
     latitudeSegments = 30;
     longitudeSegments = 30;
     constructor(public radius: ramon.ScalarMap=randomScalar,

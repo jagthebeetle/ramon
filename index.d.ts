@@ -32,7 +32,7 @@ export interface Body {
     realize(datum: ramon.Datum | ramon.Datum[], i?: number): THREE.Object3D;
     geometry: THREE.BufferGeometry;
     material: THREE.Material;
-    eidos: THREE.Object3D;
+    mesh: THREE.Object3D;
 }
 
 export interface Colorful {
