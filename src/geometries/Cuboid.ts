@@ -12,7 +12,7 @@ export default class Cuboid extends Solid<BoxBufferGeometry>
     constructor(public width: ramon.ScalarMap=randomScalar,
                 public height: ramon.ScalarMap=randomScalar,
                 public depth: ramon.ScalarMap=randomScalar,
-                public positionMap: ramon.PointMap=randomVector) {
+                public position: ramon.PointMap=randomVector) {
         super(BoxBufferGeometry);
     }
 

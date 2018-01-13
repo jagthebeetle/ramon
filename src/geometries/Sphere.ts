@@ -12,7 +12,7 @@ export default class Sphere extends Solid<SphereBufferGeometry>
     latitudeSegments = 30;
     longitudeSegments = 30;
     constructor(public radius: ramon.ScalarMap=randomScalar,
-                public positionMap: ramon.PointMap=randomVector) {
+                public position: ramon.PointMap=randomVector) {
         super(SphereBufferGeometry);
     }
     

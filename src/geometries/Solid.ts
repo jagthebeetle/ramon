@@ -3,9 +3,10 @@ import { MeshBasicMaterial, Mesh } from "three";
 import { randomColor } from "./util";
 
 export default abstract class Solid<G extends THREE.BufferGeometry>
-                              extends Hylomorphism<MeshBasicMaterial, Mesh> {
+                              extends Hylomorphism<MeshBasicMaterial, Mesh>
+                              implements ramon.Vector {
     dimensions: ramon.ScalarMap[] = [];
-    positionMap: ramon.PointMap;
+    position: ramon.PointMap;
     constructor(public form: new (...dimensions: number[]) => G,
                 ...dimensions: ramon.ScalarMap[]) {
         super();
@@ -21,7 +22,7 @@ export default abstract class Solid<G extends THREE.BufferGeometry>
         );
         this.material = new this.primaMateria();
         this.eidos = new this.morphe(this.geometry, this.material);
-        const [x, y, z] = this.positionMap(datum, i);
+        const [x, y, z] = this.position(datum, i);
         this.eidos.translateX(x);
         this.eidos.translateY(y);
         this.eidos.translateZ(z);

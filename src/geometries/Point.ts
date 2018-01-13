@@ -11,7 +11,7 @@ import Hylomorphism from './Hylomorphism';
 
 export default class Point extends Hylomorphism<PointsMaterial, Points>
                            implements ramon.Vector, ramon.Colorful {
-    constructor(public positionMap: ramon.PointMap=randomVector,
+    constructor(public position: ramon.PointMap=randomVector,
                 public color: ramon.ColorMap=randomColor) {
         super();
         this.primaMateria = PointsMaterial.bind(null, 
@@ -21,6 +21,6 @@ export default class Point extends Hylomorphism<PointsMaterial, Points>
     }
 
     get pointMaps() {
-        return [this.positionMap];
+        return [this.position];
     }
 } 

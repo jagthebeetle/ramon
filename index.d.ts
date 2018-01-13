@@ -39,7 +39,7 @@ export interface Colorful {
     color: ColorMap;
 }
 export interface Vector {
-    positionMap: PointMap;
+    position: PointMap;
 }
 
 // Hylomorphism dimension maps
