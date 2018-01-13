@@ -5,7 +5,7 @@ import {
     PointsMaterial,
     VertexColors
 } from 'three';
-import {randomColor} from './ColorfulObject';
+import {randomColor} from './util';
 import {randomVector} from './Vector';
 import Hylomorphism from './Hylomorphism';
 

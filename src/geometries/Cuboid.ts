@@ -3,8 +3,7 @@ import {
     Mesh,
     MeshBasicMaterial
 } from 'three';
-import {randomScalar} from './util';
-import {randomColor} from './ColorfulObject';
+import {randomColor, randomScalar} from './util';
 import Hylomorphism from './Hylomorphism';
 import {randomVector} from './Vector';
 
