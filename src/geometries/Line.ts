@@ -6,15 +6,14 @@ import {
     LineBasicMaterial,
     VertexColors
 } from 'three';
-import {randomColor} from './util';
-import {randomVector} from './Vector';
+import {randomColor, randomPoint} from './util';
 import Hylomorphism from './Hylomorphism';
 
 export default class Line extends Hylomorphism<LineBasicMaterial, LineSegments>
                           implements ramon.Colorful {
     constructor(public color: ramon.ColorMap=randomColor,
-                public from: ramon.PointMap=randomVector,
-                public to: ramon.PointMap=randomVector) {
+                public from: ramon.PointMap=randomPoint,
+                public to: ramon.PointMap=randomPoint) {
         super();
         this.primaMateria = LineBasicMaterial.bind(null, 
             {vertexColors: VertexColors, linewidth: 2}

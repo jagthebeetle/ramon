@@ -3,16 +3,15 @@ import {
     Mesh,
     MeshBasicMaterial
 } from 'three';
-import {randomColor, randomScalar, toFunction} from './util';
+import {randomColor, randomPoint, randomScalar, toFunction} from './util';
 import Solid from './Solid';
-import {randomVector} from './Vector';
 
 export default class Sphere extends Solid<SphereBufferGeometry>
                             implements ramon.Vector, ramon.Colorful {
     latitudeSegments = 30;
     longitudeSegments = 30;
     constructor(public radius: ramon.ScalarMap=randomScalar,
-                public position: ramon.PointMap=randomVector) {
+                public position: ramon.PointMap=randomPoint) {
         super(SphereBufferGeometry);
     }
     

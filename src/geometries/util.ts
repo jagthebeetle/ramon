@@ -4,6 +4,12 @@ export function randInt(a = 0, b = 10) {
     return a + Math.floor(Math.random() * (b - a));
 }
 
+
+export function randomPoint(): [number, number, number] {
+    return [randInt(-50, 50), randInt(-50, 50), randInt(-50, 50)];
+}
+
+
 export function randomScalar() {
     return randInt(0, 10);
 }
