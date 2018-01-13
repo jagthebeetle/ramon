@@ -14,7 +14,7 @@ export default abstract class Hylomorphism<M extends THREE.Material,
     material: M;
     primaMateria: new() => M;
     color: ramon.ColorMap;
-    pointMaps: ramon.PointMap[];
+    abstract pointMaps: ramon.PointMap[];
 
     getGeometryBuffers(
             data: ramon.Datum[],

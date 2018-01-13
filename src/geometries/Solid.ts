@@ -5,8 +5,15 @@ import { randomColor } from "./util";
 export default abstract class Solid<G extends THREE.BufferGeometry>
                               extends Hylomorphism<MeshBasicMaterial, Mesh>
                               implements ramon.Vector {
-    dimensions: ramon.ScalarMap[] = [];
-    position: ramon.PointMap;
+    abstract dimensions: ramon.ScalarMap[];
+    abstract position: ramon.PointMap;
+    /** 
+     * Dummy pointMaps. Since these are only used for generating
+     * BufferGeometries manually in [[Hylomorphism.realize]], and this class
+     * overrides that method, this field is merely here because Hylomorphism
+     * wants it.
+     */
+    pointMaps: ramon.PointMap[];
     constructor(public form: new (...dimensions: number[]) => G,
                 ...dimensions: ramon.ScalarMap[]) {
         super();
@@ -16,6 +23,7 @@ export default abstract class Solid<G extends THREE.BufferGeometry>
         this.morphe = Mesh;
     }
 
+    /** @override */
     realize(datum: ramon.Datum, i: number) {
         this.geometry = new this.form(
             ...this.dimensions.map((scalarMap, i) => scalarMap(datum, i))
