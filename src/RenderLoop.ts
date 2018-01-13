@@ -22,9 +22,10 @@ export default class RenderLoop {
             cameraSettings.controls.update : 
             renderFn;
         if (cameraSettings.controls) {
-            cameraSettings.controls.addEventListener('change', (event: Event) => {
-                renderFn(event.timeStamp);
-            });
+            cameraSettings.controls.addEventListener('change', 
+                ({timeStamp}: Event) => {
+                    renderFn(timeStamp);
+                });
             renderFn(0);
         }
         this.loop_ = (timestamp: number) => {
