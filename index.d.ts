@@ -28,7 +28,7 @@ export interface Grouping<D extends ramon.Datum> {
 }
 
 // Visualization Types
-export interface Visualizable {
+export interface Body {
     realize(datum: ramon.Datum | ramon.Datum[], i?: number): THREE.Object3D;
     geometry: THREE.BufferGeometry;
     material: THREE.Material;

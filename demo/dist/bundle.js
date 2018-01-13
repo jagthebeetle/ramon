@@ -1225,14 +1225,14 @@ class World {
     constructor(dataset, ctor) {
         this.dataset = dataset;
         this.ctor = ctor;
-        /** Hash of `Visualizable` attribute to data-mapping function. */
+        /** Hash of `Body` attribute to data-mapping function. */
         this.maps = {};
     }
     /**
      * Sets the mapping function for the specified visualization attribute.
      * These will be used when objects are created in order to determine their
      * final appearance.
-     * @param key A key on the Visualizable class
+     * @param key A key on the Body class
      * @param fn The map function from data space to visualization space
      */
     set(key, fn) {
@@ -1261,8 +1261,8 @@ class World {
         }
     }
     /**
-     * Sets all provided map functions onto a {@link ramon.Visualizable}
-     * instance. This get called by `make()`.
+     * Sets all provided map functions onto a ramon.Body instance. This gets
+     * called by `make()`.
      * @param visObject
      */
     setMaps(visObject) {

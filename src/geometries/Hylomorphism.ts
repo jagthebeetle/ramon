@@ -8,7 +8,7 @@ import { standardizeColor } from './util';
 
 export default abstract class Hylomorphism<M extends THREE.Material,
                                            O extends THREE.Object3D>
-                              implements ramon.Visualizable {
+                              implements ramon.Body {
     geometry = new BufferGeometry();
     eidos: O;
     morphe: new(geometry: THREE.BufferGeometry, material: M) => O;

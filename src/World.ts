@@ -4,12 +4,12 @@ import Line from './geometries/Line';
 /**
  * A `World` is a visualization configuration for a dataset. The motivating
  * principle is that all data in a particular world get rendered as a
- * particular `Visualizable` thing, according to certain functions from
+ * particular `Body`, according to certain functions from
  * data to the spatial/visual domain. (See [[Hylomorphism]] for all such
- * `Visualizable` classes.)
+ * `Body` classes.)
  */
-export default class World<T extends ramon.Visualizable> {
-    /** Hash of `Visualizable` attribute to data-mapping function. */
+export default class World<T extends ramon.Body> {
+    /** Hash of `Body` attribute to data-mapping function. */
     maps: {[key: string]: ramon.VisMap} = {};
     constructor(public dataset: ramon.Dataset, private ctor: new() => T) {}
 
@@ -17,7 +17,7 @@ export default class World<T extends ramon.Visualizable> {
      * Sets the mapping function for the specified visualization attribute.
      * These will be used when objects are created in order to determine their
      * final appearance.
-     * @param key A key on the Visualizable class
+     * @param key A key on the Body class
      * @param fn The map function from data space to visualization space
      */
     set<K extends keyof T>(key: K, fn: T[K]): this {
@@ -48,8 +48,8 @@ export default class World<T extends ramon.Visualizable> {
     }
 
     /**
-     * Sets all provided map functions onto a {@link ramon.Visualizable}
-     * instance. This get called by `make()`. 
+     * Sets all provided map functions onto a ramon.Body instance. This gets
+     * called by `make()`. 
      * @param visObject 
      */
     setMaps<K extends keyof T>(visObject: T) {
