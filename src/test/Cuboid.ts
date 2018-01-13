@@ -3,7 +3,7 @@ import { expect } from 'chai';
 import { BoxBufferGeometry } from 'three';
 
 describe('Cuboid', () => {
-    it('should use a BoxBufferGeometry', () => {
+    it('should use a BoxBufferGeometry.', () => {
         const box = new Cuboid();
         box.realize({}, 0);
         expect(box.geometry).to.be.an.instanceOf(BoxBufferGeometry); 
