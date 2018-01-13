@@ -1,4 +1,4 @@
-# ramon
+# ramon [![GPL-3.0](https://img.shields.io/badge/license-GPL-blue.svg)](/LICENSE)
 
 > *tell why the glassy lights* [...]  
 > *Mastered the night and portioned out the sea,*  
