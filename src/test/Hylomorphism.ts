@@ -5,7 +5,7 @@ import { datasetFromRange } from '../data';
 
 
 class TestObject extends Hylomorphism<THREE.MeshBasicMaterial, THREE.Mesh> {
-    colorMap = () => '#FACADE';
+    color = () => '#FACADE';
     pointMaps: ramon.PointMap[] = [];
     primaMateria = MeshBasicMaterial;
     morphe = Mesh;
