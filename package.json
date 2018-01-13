@@ -5,6 +5,7 @@
   "main": "dist/ramon.js",
   "scripts": {
     "build": "webpack --config webpack.prod.js",
+    "gendocs": "typedoc index.d.ts src",
     "start": "webpack --watch --config demo/webpack.demo.js",
     "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha -r ts-node/register src/test/**/*.ts"
   },
@@ -32,6 +33,7 @@
     "ts-loader": "^3.2.0",
     "ts-node": "^4.1.0",
     "tslint": "^5.8.0",
+    "typedoc": "^0.9.0",
     "typescript": "^2.6.2",
     "webpack": "^3.10.0",
     "webpack-merge": "^4.1.1"
