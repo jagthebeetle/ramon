@@ -12,9 +12,9 @@ class TestObject extends Hylomorphism<THREE.MeshBasicMaterial, THREE.Mesh> {
 }
 
 describe('Hylomorphism', () => {
-    it('should initialize a BufferGeometry on instances.', () => {
+    it('should have a default .morphe of BufferGeometry.', () => {
         const testObject = new TestObject();
-        expect(testObject.geometry).to.be.an.instanceOf(BufferGeometry);
+        expect(testObject.morphe).to.equal(BufferGeometry);
     });
 
     // In the below tests, comparison should be made to Float32Arrays or else

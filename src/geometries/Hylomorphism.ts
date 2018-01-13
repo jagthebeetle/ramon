@@ -20,7 +20,7 @@ export default abstract class Hylomorphism<M extends THREE.Material,
     geometry: BufferGeometry;
     material: M;
     mesh: O;
-    morphe: new () => BufferGeometry;
+    morphe: new () => BufferGeometry = BufferGeometry;
     hyle: new() => M;
     ousia: new(geometry: THREE.BufferGeometry, material: M) => O;
     color: ramon.ColorMap;
