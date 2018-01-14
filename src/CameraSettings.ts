@@ -1,10 +1,10 @@
 import { PerspectiveCamera } from 'three';
-import TrackballControls from 'three-trackballcontrols';
+import TrackballControls = require('three-trackballcontrols');
 
 export default class CameraSettings {
     camera: THREE.PerspectiveCamera;
     /** If controls are activated, the `TrackballControls` instance. */
-    controls: TrackballControls;
+    controls: THREE.TrackballControls;
 
     /**
      * Instantiates a `THREE.PerspectiveCamera`, matching its aspect ratio to
