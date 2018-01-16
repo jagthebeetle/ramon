@@ -12,6 +12,7 @@
         "three-trackballcontrols.d.ts"
     ],
     "include": [
-        "src/**/*.ts"
+        "src/**/*.ts",
+        "demo/*.ts"
     ]
 }
