@@ -27,9 +27,12 @@
   "homepage": "https://github.com/jagthebeetle/ramon#readme",
   "devDependencies": {
     "@types/chai": "^4.1.0",
+    "@types/chai-spies": "0.0.0",
     "@types/mocha": "^2.2.46",
     "@types/three": "^0.89.2",
+    "@types/webspeechapi": "0.0.29",
     "chai": "^4.1.2",
+    "chai-spies": "^1.0.0",
     "jsdom": "11.5.1",
     "jsdom-global": "3.0.2",
     "mocha": "^4.1.0",
