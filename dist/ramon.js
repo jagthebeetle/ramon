@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 7);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -81,48 +81,65 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
 
 /***/ }),
 /* 1 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = randInt;
-/* harmony export (immutable) */ __webpack_exports__["c"] = randomScalar;
-/* harmony export (immutable) */ __webpack_exports__["b"] = randomColor;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_three__);
 
+Object.defineProperty(exports, "__esModule", { value: true });
+const three_1 = __webpack_require__(0);
+/** Random integer between a (inclusive) and b (exclusive). */
 function randInt(a = 0, b = 10) {
     return a + Math.floor(Math.random() * (b - a));
 }
+exports.randInt = randInt;
+/** Array of three random numbers, from -50 to 49 (inclusive). */
+function randomPoint() {
+    return [randInt(-50, 50), randInt(-50, 50), randInt(-50, 50)];
+}
+exports.randomPoint = randomPoint;
+/** Random number 0-9 inclusive, for small attributes. */
 function randomScalar() {
     return randInt(0, 10);
 }
+exports.randomScalar = randomScalar;
+/** Random THREE.Color, sampled from entire RGB space. */
 function randomColor() {
-    return new __WEBPACK_IMPORTED_MODULE_0_three__["Color"](randInt(0x000000, 0x1000000));
+    return new three_1.Color(randInt(0x000000, 0x1000000));
 }
+exports.randomColor = randomColor;
+/** Returns a function that returns the provided value. */
+function toFunction(x) {
+    return () => x;
+}
+exports.toFunction = toFunction;
+const colorCalculator = new three_1.Color();
+function standardizeColor(colorOrString) {
+    return (typeof colorOrString === 'string') ?
+        colorCalculator.set(colorOrString) : colorOrString;
+}
+exports.standardizeColor = standardizeColor;
 
 
 /***/ }),
 /* 2 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__(1);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return __WEBPACK_IMPORTED_MODULE_0__util__["b"]; });
 
-
-
-
-/***/ }),
-/* 3 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_three__);
-
+Object.defineProperty(exports, "__esModule", { value: true });
+const three_1 = __webpack_require__(0);
+const util_1 = __webpack_require__(1);
+/**
+ * Base abstract class for visible bodies (the result of a visualization),
+ * inspired by Aristotle's notion that all objects are made of form (morphe)
+ * and matter (hyle). The unqualified answer to "what is X?" is X's ousia, or
+ * essence, and we therefore have a pedantic nomenclature for the
+ * constructors that respectively create the three.js Geometry, Material, and
+ * Object3D.
+ */
 class Hylomorphism {
     constructor() {
-        this.geometry = new __WEBPACK_IMPORTED_MODULE_0_three__["BufferGeometry"]();
+        this.morphe = three_1.BufferGeometry;
     }
     getGeometryBuffers(data, colorMap, ...positionMaps) {
         const pointsPerObject = positionMaps.length;
@@ -130,15 +147,12 @@ class Hylomorphism {
         const bufferLength = componentsPerObject * data.length;
         const positionBuffer = new Float32Array(bufferLength);
         const colorBuffer = new Float32Array(bufferLength);
-        const colorCalculator = new __WEBPACK_IMPORTED_MODULE_0_three__["Color"]();
         data.forEach((datum, i) => {
             positionMaps.forEach((map, j) => {
-                positionBuffer.set(map(datum), componentsPerObject * i + j * 3);
+                positionBuffer.set(map(datum, i), componentsPerObject * i + j * 3);
             });
-            const requestedColor = colorMap(datum);
-            const color = (typeof requestedColor === 'string') ?
-                colorCalculator.set(requestedColor)
-                : requestedColor;
+            const requestedColor = colorMap(datum, i);
+            const color = util_1.standardizeColor(requestedColor);
             const rgb = color.toArray();
             for (let p = 0; p < pointsPerObject; ++p) {
                 colorBuffer.set(rgb, componentsPerObject * i + 3 * p);
@@ -146,148 +160,161 @@ class Hylomorphism {
         });
         return [colorBuffer, positionBuffer];
     }
-    realize(data) {
+    realize(data, i) {
         if (!Array.isArray(data)) {
             data = [data];
         }
-        this.material = new this.primaMateria();
-        const [colorBuffer, positionBuffer] = this.getGeometryBuffers(data, this.colorMap, ...this.pointMaps);
-        this.geometry.addAttribute('position', new __WEBPACK_IMPORTED_MODULE_0_three__["Float32BufferAttribute"](positionBuffer, 3));
-        this.geometry.addAttribute('color', new __WEBPACK_IMPORTED_MODULE_0_three__["Float32BufferAttribute"](colorBuffer, 3));
-        this.eidos = new this.morphe(this.geometry, this.material);
-        return this.eidos;
+        this.geometry = new this.morphe();
+        this.material = new this.hyle();
+        const [colorBuffer, positionBuffer] = this.getGeometryBuffers(data, this.color, ...this.pointMaps);
+        this.geometry.addAttribute('position', new three_1.Float32BufferAttribute(positionBuffer, 3));
+        this.geometry.addAttribute('color', new three_1.Float32BufferAttribute(colorBuffer, 3));
+        this.mesh = new this.ousia(this.geometry, this.material);
+        return this.mesh;
     }
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = Hylomorphism;
+exports.default = Hylomorphism;
 
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const Hylomorphism_1 = __webpack_require__(2);
+const three_1 = __webpack_require__(0);
+const util_1 = __webpack_require__(1);
+class Solid extends Hylomorphism_1.default {
+    constructor(morphe, ...dimensions) {
+        super();
+        this.morphe = morphe;
+        this.hyle = three_1.MeshBasicMaterial.bind(null, {
+            color: util_1.randomColor()
+        });
+        this.ousia = three_1.Mesh;
+    }
+    /** @override */
+    realize(datum, i) {
+        this.geometry = new this.morphe(...this.dimensions.map((scalarMap, i) => scalarMap(datum, i)));
+        this.material = new this.hyle();
+        if (this.color) {
+            this.material.setValues({
+                color: util_1.standardizeColor(this.color(datum, i))
+            });
+        }
+        this.mesh = new this.ousia(this.geometry, this.material);
+        const [x, y, z] = this.position(datum, i);
+        this.mesh.translateX(x);
+        this.mesh.translateY(y);
+        this.mesh.translateZ(z);
+        return this.mesh;
+    }
+}
+exports.default = Solid;
 
 
 /***/ }),
 /* 4 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["a"] = randomVector;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__(1);
 
-function randomVector(datum) {
-    return [Object(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* randInt */])(-50, 50), Object(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* randInt */])(-50, 50), Object(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* randInt */])(-50, 50)];
+Object.defineProperty(exports, "__esModule", { value: true });
+const three_1 = __webpack_require__(0);
+const util_1 = __webpack_require__(1);
+const Hylomorphism_1 = __webpack_require__(2);
+class Line extends Hylomorphism_1.default {
+    constructor(color = util_1.randomColor, from = util_1.randomPoint, to = util_1.randomPoint) {
+        super();
+        this.color = color;
+        this.from = from;
+        this.to = to;
+        this.hyle = three_1.LineBasicMaterial.bind(null, { vertexColors: three_1.VertexColors, linewidth: 2 });
+        this.ousia = three_1.LineSegments;
+    }
+    get pointMaps() {
+        return [this.from, this.to];
+    }
 }
+exports.default = Line;
 
 
 /***/ }),
 /* 5 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_three__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ColorfulObject__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Vector__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Hylomorphism__ = __webpack_require__(3);
 
-
-
-
-class Line extends __WEBPACK_IMPORTED_MODULE_3__Hylomorphism__["a" /* default */] {
-    constructor(colorMap = __WEBPACK_IMPORTED_MODULE_1__ColorfulObject__["a" /* randomColor */], fromMap = __WEBPACK_IMPORTED_MODULE_2__Vector__["a" /* randomVector */], toMap = __WEBPACK_IMPORTED_MODULE_2__Vector__["a" /* randomVector */]) {
+Object.defineProperty(exports, "__esModule", { value: true });
+const three_1 = __webpack_require__(0);
+const util_1 = __webpack_require__(1);
+const Hylomorphism_1 = __webpack_require__(2);
+class Point extends Hylomorphism_1.default {
+    constructor(position = util_1.randomPoint, color = util_1.randomColor) {
         super();
-        this.colorMap = colorMap;
-        this.fromMap = fromMap;
-        this.toMap = toMap;
-        this.primaMateria = __WEBPACK_IMPORTED_MODULE_0_three__["LineBasicMaterial"].bind(null, { vertexColors: __WEBPACK_IMPORTED_MODULE_0_three__["VertexColors"], linewidth: 2 });
-        this.morphe = __WEBPACK_IMPORTED_MODULE_0_three__["LineSegments"];
+        this.position = position;
+        this.color = color;
+        this.hyle = three_1.PointsMaterial.bind(null, { vertexColors: three_1.VertexColors });
+        this.ousia = three_1.Points;
     }
     get pointMaps() {
-        return [this.fromMap, this.toMap];
+        return [this.position];
     }
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = Line;
-
+exports.default = Point;
 
 
 /***/ }),
 /* 6 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_three__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ColorfulObject__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Vector__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Hylomorphism__ = __webpack_require__(3);
 
-
-
-
-class Point extends __WEBPACK_IMPORTED_MODULE_3__Hylomorphism__["a" /* default */] {
-    constructor(positionMap = __WEBPACK_IMPORTED_MODULE_2__Vector__["a" /* randomVector */], colorMap = __WEBPACK_IMPORTED_MODULE_1__ColorfulObject__["a" /* randomColor */]) {
-        super();
-        this.positionMap = positionMap;
-        this.colorMap = colorMap;
-        this.primaMateria = __WEBPACK_IMPORTED_MODULE_0_three__["PointsMaterial"].bind(null, { vertexColors: __WEBPACK_IMPORTED_MODULE_0_three__["VertexColors"] });
-        this.morphe = __WEBPACK_IMPORTED_MODULE_0_three__["Points"];
-    }
-    get pointMaps() {
-        return [this.positionMap];
-    }
+function __export(m) {
+    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = Point;
-
-
-
-/***/ }),
-/* 7 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony export (immutable) */ __webpack_exports__["initialize"] = initialize;
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_three__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__data__ = __webpack_require__(8);
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "group", function() { return __WEBPACK_IMPORTED_MODULE_1__data__["b"]; });
-/* harmony namespace reexport (by provided) */ __webpack_require__.d(__webpack_exports__, "datasetFromRange", function() { return __WEBPACK_IMPORTED_MODULE_1__data__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__CameraSettings__ = __webpack_require__(9);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "CameraSettings", function() { return __WEBPACK_IMPORTED_MODULE_2__CameraSettings__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__geometries_Cuboid__ = __webpack_require__(11);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Cuboid", function() { return __WEBPACK_IMPORTED_MODULE_3__geometries_Cuboid__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__geometries_Line__ = __webpack_require__(5);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Line", function() { return __WEBPACK_IMPORTED_MODULE_4__geometries_Line__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__geometries_Point__ = __webpack_require__(6);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Point", function() { return __WEBPACK_IMPORTED_MODULE_5__geometries_Point__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__geometries_Sphere__ = __webpack_require__(12);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "Sphere", function() { return __WEBPACK_IMPORTED_MODULE_6__geometries_Sphere__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__RenderLoop__ = __webpack_require__(13);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "RenderLoop", function() { return __WEBPACK_IMPORTED_MODULE_7__RenderLoop__["a"]; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__World__ = __webpack_require__(14);
-/* harmony reexport (binding) */ __webpack_require__.d(__webpack_exports__, "World", function() { return __WEBPACK_IMPORTED_MODULE_8__World__["a"]; });
-
-
-
-
-
-
-
-
-
+Object.defineProperty(exports, "__esModule", { value: true });
+const three_1 = __webpack_require__(0);
+__export(__webpack_require__(7));
+var CameraSettings_1 = __webpack_require__(8);
+exports.CameraSettings = CameraSettings_1.default;
+var Cuboid_1 = __webpack_require__(10);
+exports.Cuboid = Cuboid_1.default;
+var Line_1 = __webpack_require__(4);
+exports.Line = Line_1.default;
+var Point_1 = __webpack_require__(5);
+exports.Point = Point_1.default;
+var Sphere_1 = __webpack_require__(11);
+exports.Sphere = Sphere_1.default;
+var RenderLoop_1 = __webpack_require__(12);
+exports.RenderLoop = RenderLoop_1.default;
+var World_1 = __webpack_require__(13);
+exports.World = World_1.default;
+/**
+ * Initializes a scene and `WebGLRenderer`, appending the canvas element under
+ * the provided `container` node.
+ * @param container Container for WebGL `<canvas>`.
+ */
 function initialize(container = document.body) {
-    const scene = new __WEBPACK_IMPORTED_MODULE_0_three__["Scene"]();
-    const renderer = new __WEBPACK_IMPORTED_MODULE_0_three__["WebGLRenderer"]();
+    const scene = new three_1.Scene();
+    const renderer = new three_1.WebGLRenderer();
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     container.appendChild(renderer.domElement);
     return { scene, renderer };
 }
+exports.initialize = initialize;
 
 
 /***/ }),
-/* 8 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 7 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony export (immutable) */ __webpack_exports__["b"] = group;
-/* harmony export (immutable) */ __webpack_exports__["a"] = datasetFromRange;
+
+Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * Groups `data` by: bucketing it according to `grouping.groupFields` and then
  * applying grouping.aggregateFn.
@@ -320,6 +347,8 @@ function group(data, grouping) {
     /* tslint:enable */
     return result;
 }
+exports.group = group;
+let nextDatasetId = 0;
 /**
  * Produces a dataset of integers under the optional field, up to provided
  * limit.
@@ -327,7 +356,6 @@ function group(data, grouping) {
  * @param fieldName Field under which each datum will be contained, defaulting
  *                  to `val`.
  */
-let nextDatasetId = 0;
 function datasetFromRange(upTo, fieldName = 'val') {
     const data = [];
     for (let i = 0; i < upTo; ++i) {
@@ -335,38 +363,53 @@ function datasetFromRange(upTo, fieldName = 'val') {
     }
     return { id: String(nextDatasetId++), data };
 }
+exports.datasetFromRange = datasetFromRange;
 
 
 /***/ }),
-/* 9 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_three__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_three_trackballcontrols__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_three_trackballcontrols___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_three_trackballcontrols__);
 
-
+Object.defineProperty(exports, "__esModule", { value: true });
+const three_1 = __webpack_require__(0);
+const TrackballControls = __webpack_require__(9);
 class CameraSettings {
+    /**
+     * Instantiates a `THREE.PerspectiveCamera`, matching its aspect ratio to
+     * the full window; this can be overridden.
+     * @param fieldOfView
+     * @param aspectRatio
+     * @param nearFrustum
+     * @param farFrustum
+     */
     constructor(fieldOfView, aspectRatio = window.innerWidth / window.innerHeight, nearFrustum, farFrustum) {
-        this.camera = new __WEBPACK_IMPORTED_MODULE_0_three__["PerspectiveCamera"](fieldOfView, aspectRatio);
+        this.camera = new three_1.PerspectiveCamera(fieldOfView, aspectRatio);
     }
+    /**
+     * Activates `TrackballControls` for this camera and passes provided
+     * initialization options.
+     * @param config `TrackballControls` options to set.
+     */
     activateControls(config) {
-        this.controls = new __WEBPACK_IMPORTED_MODULE_1_three_trackballcontrols___default.a(this.camera);
+        this.controls = new TrackballControls(this.camera);
         Object.assign(this.controls, config);
     }
+    /**
+     * Useful for window resizes, recalculates aspect ratio and three.js
+     * projection matrix.
+     */
     refitWindow() {
         this.camera.aspect = window.innerWidth / window.innerHeight;
         this.camera.updateProjectionMatrix();
     }
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = CameraSettings;
-
+exports.default = CameraSettings;
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -1028,104 +1071,81 @@ TrackballControls.prototype = Object.create( THREE.EventDispatcher.prototype );
 
 
 /***/ }),
-/* 11 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_three__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ColorfulObject__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Hylomorphism__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Vector__ = __webpack_require__(4);
 
-
-
-
-
-class Cuboid extends __WEBPACK_IMPORTED_MODULE_3__Hylomorphism__["a" /* default */] {
-    constructor(widthMap = __WEBPACK_IMPORTED_MODULE_1__util__["c" /* randomScalar */], heightMap = __WEBPACK_IMPORTED_MODULE_1__util__["c" /* randomScalar */], depthMap = __WEBPACK_IMPORTED_MODULE_1__util__["c" /* randomScalar */], positionMap = __WEBPACK_IMPORTED_MODULE_4__Vector__["a" /* randomVector */]) {
-        super();
-        this.widthMap = widthMap;
-        this.heightMap = heightMap;
-        this.depthMap = depthMap;
-        this.positionMap = positionMap;
-        this.primaMateria = __WEBPACK_IMPORTED_MODULE_0_three__["MeshBasicMaterial"].bind(null, {
-            color: Object(__WEBPACK_IMPORTED_MODULE_2__ColorfulObject__["a" /* randomColor */])()
-        });
-        this.morphe = __WEBPACK_IMPORTED_MODULE_0_three__["Mesh"];
+Object.defineProperty(exports, "__esModule", { value: true });
+const three_1 = __webpack_require__(0);
+const util_1 = __webpack_require__(1);
+const Solid_1 = __webpack_require__(3);
+class Cuboid extends Solid_1.default {
+    constructor(width = util_1.randomScalar, height = util_1.randomScalar, depth = util_1.randomScalar, position = util_1.randomPoint) {
+        super(three_1.BoxBufferGeometry);
+        this.width = width;
+        this.height = height;
+        this.depth = depth;
+        this.position = position;
     }
-    realize(datum) {
-        this.geometry = new __WEBPACK_IMPORTED_MODULE_0_three__["BoxBufferGeometry"](this.widthMap(datum), this.heightMap(datum), this.depthMap(datum));
-        this.material = new this.primaMateria();
-        this.eidos = new this.morphe(this.geometry, this.material);
-        const [x, y, z] = this.positionMap(datum);
-        this.eidos.translateX(x);
-        this.eidos.translateY(y);
-        this.eidos.translateZ(z);
-        return this.eidos;
+    get dimensions() {
+        return [this.width, this.height, this.depth];
     }
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = Cuboid;
+exports.default = Cuboid;
 
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const three_1 = __webpack_require__(0);
+const util_1 = __webpack_require__(1);
+const Solid_1 = __webpack_require__(3);
+class Sphere extends Solid_1.default {
+    constructor(radius = util_1.randomScalar, position = util_1.randomPoint) {
+        super(three_1.SphereBufferGeometry);
+        this.radius = radius;
+        this.position = position;
+        this.latitudeSegments = 30;
+        this.longitudeSegments = 30;
+    }
+    get dimensions() {
+        return [
+            this.radius,
+            util_1.toFunction(this.latitudeSegments),
+            util_1.toFunction(this.longitudeSegments)
+        ];
+    }
+}
+exports.default = Sphere;
 
 
 /***/ }),
 /* 12 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_three__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ColorfulObject__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__Hylomorphism__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__Vector__ = __webpack_require__(4);
 
-
-
-
-
-class Sphere extends __WEBPACK_IMPORTED_MODULE_3__Hylomorphism__["a" /* default */] {
-    constructor(radiusMap = __WEBPACK_IMPORTED_MODULE_1__util__["c" /* randomScalar */], positionMap = __WEBPACK_IMPORTED_MODULE_4__Vector__["a" /* randomVector */]) {
-        super();
-        this.radiusMap = radiusMap;
-        this.positionMap = positionMap;
-        this.latitudeSegments = 30;
-        this.longitudeSegments = 30;
-        this.primaMateria = __WEBPACK_IMPORTED_MODULE_0_three__["MeshBasicMaterial"].bind(null, {
-            color: Object(__WEBPACK_IMPORTED_MODULE_2__ColorfulObject__["a" /* randomColor */])()
-        });
-        this.morphe = __WEBPACK_IMPORTED_MODULE_0_three__["Mesh"];
-    }
-    realize(datum) {
-        this.geometry = new __WEBPACK_IMPORTED_MODULE_0_three__["SphereBufferGeometry"](this.radiusMap(datum), this.longitudeSegments, this.latitudeSegments);
-        this.material = new this.primaMateria();
-        this.eidos = new this.morphe(this.geometry, this.material);
-        const [x, y, z] = this.positionMap(datum);
-        this.eidos.translateX(x);
-        this.eidos.translateY(y);
-        this.eidos.translateZ(z);
-        return this.eidos;
-    }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Sphere;
-
-
-
-/***/ }),
-/* 13 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 class RenderLoop {
+    /**
+     * Sets up main animation loop. The provided `renderFn` will be called in
+     * the main loop if trackball controls have not been activated; otherwise,
+     * the function will be called on the trackball controls' `change` event.
+     * @param cameraSettings Configured `CameraSettings` object
+     * @param renderFn Function to call at each animation frame
+     */
     constructor(cameraSettings, renderFn) {
         this.renderFn = cameraSettings.controls ?
             cameraSettings.controls.update :
             renderFn;
         if (cameraSettings.controls) {
-            cameraSettings.controls.addEventListener('change', (event) => {
-                renderFn(event.timeStamp);
+            cameraSettings.controls.addEventListener('change', ({ timeStamp }) => {
+                renderFn(timeStamp);
             });
             renderFn(0);
         }
@@ -1136,55 +1156,78 @@ class RenderLoop {
         this.loop_(0);
     }
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = RenderLoop;
-
+exports.default = RenderLoop;
 
 
 /***/ }),
-/* 14 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__geometries_Point__ = __webpack_require__(6);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__geometries_Line__ = __webpack_require__(5);
 
-
+Object.defineProperty(exports, "__esModule", { value: true });
+const Point_1 = __webpack_require__(5);
+const Line_1 = __webpack_require__(4);
+/**
+ * A `World` is a visualization configuration for a dataset. The motivating
+ * principle is that all data in a particular world get rendered as a
+ * particular `Body`, according to certain functions from
+ * data to the spatial/visual domain. (See [[Hylomorphism]] for all such
+ * `Body` classes.)
+ */
 class World {
     constructor(dataset, ctor) {
         this.dataset = dataset;
         this.ctor = ctor;
+        /** Hash of `Body` attribute to data-mapping function. */
         this.maps = {};
     }
+    /**
+     * Sets the mapping function for the specified visualization attribute.
+     * These will be used when objects are created in order to determine their
+     * final appearance.
+     * @param key A key on the Body class
+     * @param fn The map function from data space to visualization space
+     */
     set(key, fn) {
         this.maps[key] = fn;
+        return this;
     }
+    /**
+     * After all maps have been set, create `Object3D` instance(s) and return
+     * them. The invocation is different for [[Line]]s and [[Point]]s since
+     * these support creating a single mesh.
+     */
     make() {
         // Odd indirection required to trick TS into comparing these two.
         switch (this.ctor.prototype.constructor) {
-            case __WEBPACK_IMPORTED_MODULE_0__geometries_Point__["a" /* default */]:
-            case __WEBPACK_IMPORTED_MODULE_1__geometries_Line__["a" /* default */]:
+            case Point_1.default:
+            case Line_1.default:
                 const visObject = new this.ctor();
                 this.setMaps(visObject);
                 return [visObject.realize(this.dataset.data)];
             default:
-                return this.dataset.data.map(datum => {
+                return this.dataset.data.map((datum, i) => {
                     const visObject = new this.ctor();
                     this.setMaps(visObject);
-                    return visObject.realize(datum);
+                    return visObject.realize(datum, i);
                 });
         }
     }
+    /**
+     * Sets all provided map functions onto a ramon.Body instance. This gets
+     * called by `make()`.
+     * @param visObject
+     */
     setMaps(visObject) {
         /* tslint:disable:forin */
         for (const key in this.maps) {
             visObject[key] = this.maps[key];
         }
         /* tslint:enable */
-        console.info(visObject);
     }
 }
-/* harmony export (immutable) */ __webpack_exports__["a"] = World;
-
+exports.default = World;
 
 
 /***/ })
