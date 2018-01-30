@@ -4,7 +4,8 @@
  * @param data
  * @param grouping A grouping description by which to transform data.
  */
-export function group<D extends ramon.Datum>(data: D[], grouping: ramon.Grouping<D>) {
+export function group<D extends ramon.Datum>(data: D[],
+                                             grouping: ramon.Grouping<D>) {
     interface GroupIntermediate {
         [stringOfTuple: string]: D[];
     }
@@ -19,7 +20,8 @@ export function group<D extends ramon.Datum>(data: D[], grouping: ramon.Grouping
     });
 
     const result: Array<Partial<D>> = [];
-    const aggregateName = `${grouping.aggregateFn.name}_${grouping.aggregateField}`;
+    const aggregateName = grouping.aggregateFn.name + '_' +
+                          grouping.aggregateField;
     /* tslint:disable:forin */
     for (const groupKey in groups) {
         const group: Partial<D> = {};
