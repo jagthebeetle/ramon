@@ -26,7 +26,7 @@ describe('Solid', () => {
     });
 
     describe('.realize()', () => {
-        it('should init Geometry with return value of each .dimensions fn,' + 
+        it('should init Geometry with return value of each .dimensions fn, ' + 
            'called in order on the provided datum.', 
                 () => {
             const plane = new Plane(PlaneBufferGeometry);
@@ -44,11 +44,25 @@ describe('Solid', () => {
             expect(geometry.parameters.height).to.equal(24);
         });
 
-        it('should translate the Object3D by the `position` map', () => {
+        it('should translate the Object3D by the `position` map.', () => {
             const plane = new Plane(PlaneBufferGeometry);
             plane.position = () => [8, 6, 7];
             const planeBody = plane.realize({val: 0}, 0);
             expect(planeBody.position.toArray()).to.deep.equal([8, 6, 7]);
+        });
+
+        it('should pass the datum index to `position` maps.', () => {
+            const plane = new Plane(PlaneBufferGeometry);
+            const calls: number[] = [];
+            plane.dimensions = [
+                (d, i) => {
+                    calls.push(i);
+                    return i;
+                },
+            ];
+            const planeBody = plane.realize({val: 0}, 3);
+            expect(calls.length).to.equal(1);
+            expect(calls[0]).to.equal(3);
         });
 
         it('should set material.color using .color(d, i) if present.', () => {

@@ -26,7 +26,7 @@ export default abstract class Solid<G extends THREE.BufferGeometry>
     /** @override */
     realize(datum: ramon.Datum, i: number) {
         this.geometry = new this.morphe(
-            ...this.dimensions.map((scalarMap, i) => scalarMap(datum, i))
+            ...this.dimensions.map((scalarMap) => scalarMap(datum, i))
         );
         this.material = new this.hyle();
         if (this.color) {
