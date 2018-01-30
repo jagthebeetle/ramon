@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { datasetFromRange, Line, World } from '../index';
+import { datasetFromRange, Line, Point, World } from '../index';
 import { randomColor, randomPoint, randomScalar } from '../geometries/util';
 import Solid from '../geometries/Solid';
 import { PlaneBufferGeometry, Mesh } from 'three';
@@ -30,6 +30,12 @@ describe('World', () => {
     });
 
     describe('.make()', () => {
+        it('should make a single instance of Line or Point from .data.', () => {
+            const lineWorld = new World(datasetFromRange(3), Line);
+            const pointWorld = new World(datasetFromRange(10), Point);
+            expect(lineWorld.make().length).to.equal(1);
+            expect(pointWorld.make().length).to.equal(1);
+        });
         it('should make .data.length instances of ctor if ctor is a Solid, ' + 
            'passing each instance the datum and index.', () => {
             const calls: Array<[ramon.Datum, number]> = [];

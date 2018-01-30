@@ -7,6 +7,7 @@ import {
     MeshBasicMaterial
 } from 'three';
 import { randomPoint } from '../geometries/util';
+import { datasetFromRange } from '../index';
 
 class Plane extends Solid<PlaneBufferGeometry> {
     position=randomPoint;
@@ -48,6 +49,20 @@ describe('Solid', () => {
             plane.position = () => [8, 6, 7];
             const planeBody = plane.realize({val: 0}, 0);
             expect(planeBody.position.toArray()).to.deep.equal([8, 6, 7]);
+        });
+
+        it('should set material.color using .color(d, i) if present.', () => {
+            const plane = new Plane(PlaneBufferGeometry);
+            const result: ramon.Datum[] = [];
+            plane.color = (d, i) => {
+                result[i] = d;
+                return '#ffffff';
+            };
+            const testDatum = {val: 9};
+            const testIndex = 4;
+            plane.realize(testDatum, testIndex);
+            expect(result[testIndex]).to.equal(testDatum);
+            expect(plane.material.color.getHex()).to.equal(0xffffff);
         });
     });
 });

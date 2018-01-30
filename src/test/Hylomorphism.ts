@@ -75,6 +75,15 @@ describe('Hylomorphism', () => {
     });
 
     describe('.realize()', () => {
+        it('should accept a single datum.', () => {
+            const testObject = new TestObject();
+            testObject.pointMaps = [() => [0, 0, 0]];
+            const datum = datasetFromRange(1).data[0];
+            const result = testObject.realize(datum);
+            expect(result).to.be.an.instanceOf(Mesh);
+            expect(testObject.geometry.getAttribute('position').array.length)
+                .to.equal(3);
+        });
         it('should set .material to a new .hyle().', () => {
             const testObject = new TestObject();
             class FancyMaterial extends MeshBasicMaterial {}
