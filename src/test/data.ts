@@ -1,7 +1,5 @@
 import { group } from '../data';
 import { sum } from '../aggregateFunctions';
-import { expect } from 'chai';
-import 'mocha';
 
 describe('group', () => {
     it('should group data by the provided keys and function.', () => {
@@ -17,7 +15,7 @@ describe('group', () => {
             aggregateField: 'commits',
             aggregateFn: sum
         };
-        expect(group(data, grouping)).to.have.deep.members([
+        expect(group(data, grouping)).toEqual([
             {name: 'John', sum_commits: 4},
             {name: 'Alice', sum_commits: 8},
             {name: 'Bob', sum_commits: 4}

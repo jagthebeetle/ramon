@@ -1,12 +1,11 @@
 import Cuboid from '../geometries/Cuboid';
-import { expect } from 'chai';
 import { BoxBufferGeometry } from 'three';
 
 describe('Cuboid', () => {
     it('should use a BoxBufferGeometry.', () => {
         const box = new Cuboid();
         box.realize({}, 0);
-        expect(box.geometry).to.be.an.instanceOf(BoxBufferGeometry); 
+        expect(box.geometry).toBeInstanceOf(BoxBufferGeometry); 
     });
 
     describe('.dimensions', () => {
@@ -16,9 +15,9 @@ describe('Cuboid', () => {
             function depth() { return 3; }
             const box = new Cuboid(width, height, depth);
             const [testW, testH, testD] = box.dimensions;
-            expect(testW).to.equal(width);
-            expect(testH).to.equal(height);
-            expect(testD).to.equal(depth);
+            expect(testW).toBe(width);
+            expect(testH).toBe(height);
+            expect(testD).toBe(depth);
         });
     });
 });

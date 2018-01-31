@@ -8,7 +8,7 @@
     "cover": "nyc npm test",
     "gendocs": "typedoc index.d.ts src",
     "start": "webpack --watch --config demo/webpack.demo.js",
-    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha -r ts-node/register -r jsdom-global/register -r ./src/test/util/mocha-register src/test/**/*.ts"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -28,15 +28,18 @@
   "devDependencies": {
     "@types/chai": "^4.1.0",
     "@types/chai-spies": "0.0.0",
+    "@types/jest": "^22.1.1",
     "@types/mocha": "^2.2.46",
     "@types/three": "^0.89.2",
     "@types/webspeechapi": "0.0.29",
     "chai": "^4.1.2",
     "chai-spies": "^1.0.0",
+    "jest": "^22.1.4",
     "jsdom": "11.5.1",
     "jsdom-global": "3.0.2",
     "mocha": "^4.1.0",
     "nyc": "^11.4.1",
+    "ts-jest": "^22.0.2",
     "ts-loader": "^3.2.0",
     "ts-node": "^4.1.0",
     "tslint": "^5.8.0",
@@ -47,8 +50,23 @@
     "webpack-merge": "^4.1.1"
   },
   "dependencies": {
+    "canvas-prebuilt": "^1.6.5-prerelease.1",
     "three": "^0.89.0",
     "three-trackballcontrols": "0.0.7"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "src/test/.*\\.ts$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
   },
   "nyc": {
     "include": [

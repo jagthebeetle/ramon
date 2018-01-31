@@ -1,10 +1,5 @@
-import chai = require('chai');
-import spies = require('chai-spies');
 import CameraSettings from '../CameraSettings';
 import RenderLoop from '../RenderLoop';
-
-const {expect} = chai;
-chai.use(spies);
 
 describe('RenderLoop', () => {
     it('should begin calling renderFn in a loop.', (done) => {
@@ -23,14 +18,10 @@ describe('RenderLoop', () => {
             () => {
         const settings = new CameraSettings(75);
         settings.activateControls({});
-        const renderSpy = chai.spy();
+        const renderSpy = jest.fn();
         const loop = new RenderLoop(settings, renderSpy);
-        /* tslint:disable:no-unused-expression */
-        expect(renderSpy).to.have.been.called.once;
-        /* tslint:enable */
+        expect(renderSpy).toHaveBeenCalledTimes(1);
         settings.controls.dispatchEvent({type: 'change'});
-        /* tslint:disable:no-unused-expression */
-        expect(renderSpy).to.have.been.called.twice;
-        /* tslint:enable */
+        expect(renderSpy).toHaveBeenCalledTimes(2);
     });
 });

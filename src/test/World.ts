@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import { datasetFromRange, Line, Point, World } from '../index';
 import { randomColor, randomPoint, randomScalar } from '../geometries/util';
 import Solid from '../geometries/Solid';
@@ -10,7 +9,7 @@ describe('World', () => {
             const w = new World(datasetFromRange(3), Line);
             const pointMap = randomPoint;
             w.set('from', pointMap);
-            expect(w.maps.from).to.equal(pointMap);
+            expect(w.maps.from).toBe(pointMap);
         });
     });
 
@@ -24,8 +23,8 @@ describe('World', () => {
             w.set('color', colorMap);
             const l = new Line();
             w.setMaps(l);
-            expect(l.from).to.equal(pointMap);
-            expect(l.color).to.equal(colorMap);
+            expect(l.from).toBe(pointMap);
+            expect(l.color).toBe(colorMap);
         });
     });
 
@@ -33,8 +32,8 @@ describe('World', () => {
         it('should make a single instance of Line or Point from .data.', () => {
             const lineWorld = new World(datasetFromRange(3), Line);
             const pointWorld = new World(datasetFromRange(10), Point);
-            expect(lineWorld.make().length).to.equal(1);
-            expect(pointWorld.make().length).to.equal(1);
+            expect(lineWorld.make().length).toBe(1);
+            expect(pointWorld.make().length).toBe(1);
         });
         it('should make .data.length instances of ctor if ctor is a Solid, ' + 
            'passing each instance the datum and index.', () => {
@@ -53,11 +52,11 @@ describe('World', () => {
             const dataset = datasetFromRange(numData);
             const w = new World(dataset, Blob);
             const planes = w.make();
-            expect(planes.length).to.equal(numData);
+            expect(planes.length).toBe(numData);
             for (let i = 0; i < numData; ++i) {
                 const [datumArg, iArg] = calls[i];
-                expect(datumArg).to.equal(dataset.data[i]);
-                expect(iArg).to.equal(i);
+                expect(datumArg).toBe(dataset.data[i]);
+                expect(iArg).toBe(i);
             }
         });
     });

@@ -1,4 +1,3 @@
-import { expect } from 'chai';
 import Solid from '../geometries/Solid';
 import {
     BufferGeometry,
@@ -17,12 +16,12 @@ class Plane extends Solid<PlaneBufferGeometry> {
 describe('Solid', () => {
     it('should have a default .ousia of Mesh.', () => {
         const plane = new Plane(PlaneBufferGeometry);
-        expect(plane.ousia).to.equal(Mesh);
+        expect(plane.ousia).toBe(Mesh);
     });
 
     it('should be able to produce a Material without arguments.', () => {
         const plane = new Plane(PlaneBufferGeometry);
-        expect(new plane.hyle()).to.be.an.instanceOf(MeshBasicMaterial);
+        expect(new plane.hyle()).toBeInstanceOf(MeshBasicMaterial);
     });
 
     describe('.realize()', () => {
@@ -40,15 +39,15 @@ describe('Solid', () => {
             // construct it. Possible TODO on @types/three.
             const geometry = planeBody.geometry as any as PlaneBufferGeometry;
             /* tslint:enable */
-            expect(geometry.parameters.width).to.equal(42);
-            expect(geometry.parameters.height).to.equal(24);
+            expect(geometry.parameters.width).toBe(42);
+            expect(geometry.parameters.height).toBe(24);
         });
 
         it('should translate the Object3D by the `position` map.', () => {
             const plane = new Plane(PlaneBufferGeometry);
             plane.position = () => [8, 6, 7];
             const planeBody = plane.realize({val: 0}, 0);
-            expect(planeBody.position.toArray()).to.deep.equal([8, 6, 7]);
+            expect(planeBody.position.toArray()).toEqual([8, 6, 7]);
         });
 
         it('should pass the datum index to `position` maps.', () => {
@@ -61,8 +60,8 @@ describe('Solid', () => {
                 },
             ];
             const planeBody = plane.realize({val: 0}, 3);
-            expect(calls.length).to.equal(1);
-            expect(calls[0]).to.equal(3);
+            expect(calls.length).toBe(1);
+            expect(calls[0]).toBe(3);
         });
 
         it('should set material.color using .color(d, i) if present.', () => {
@@ -75,8 +74,8 @@ describe('Solid', () => {
             const testDatum = {val: 9};
             const testIndex = 4;
             plane.realize(testDatum, testIndex);
-            expect(result[testIndex]).to.equal(testDatum);
-            expect(plane.material.color.getHex()).to.equal(0xffffff);
+            expect(result[testIndex]).toBe(testDatum);
+            expect(plane.material.color.getHex()).toBe(0xffffff);
         });
     });
 });
